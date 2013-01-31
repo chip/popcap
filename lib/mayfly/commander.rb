@@ -21,8 +21,7 @@ module Mayfly
     end
 
     # Internal: Execute the command using Open3.capture3.
-    #
-    # execute - It will return an instance of Commander, in order
+    # It will return an instance of Commander, in order
     # to chain methods.
     #
     def execute
@@ -31,25 +30,22 @@ module Mayfly
     end
 
     # Internal: Open3.capture3 returns an array of three elements.
-    #
-    # stdout - The first element returned is stdout.
+    # The first element returned is stdout.
     #
     def stdout
       @executed[0]
     end
 
     # Internal: Open3.capture3 returns an array of three elements.
-    #
-    # stderr - The second element returned is stderr.
+    # The second element returned is stderr.
     #
     def stderr
       @executed[1]
     end
 
     # Internal: Open3.capture3 returns an array of three elements.
-    #
-    # status - The third element returned is status.  Status can
-    # have a 'success?' of true or false.
+    # The third element returned is status.  Status can have a 
+    # 'success?' of true or false.
     #
     # Examples
     # 
