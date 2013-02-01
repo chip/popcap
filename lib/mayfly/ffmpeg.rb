@@ -1,7 +1,7 @@
 require 'mayfly/commander'
+require 'mayfly/fileable'
 
 module Mayfly
-
   # Internal: This is a wrapper for the FFmpeg C library.
   #
   # Examples
@@ -10,6 +10,9 @@ module Mayfly
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg
+    include Fileable
+
+    attr_reader :filepath
 
     # Internal: initialize
     #
@@ -45,9 +48,33 @@ module Mayfly
       @stdout ||= Commander.new(*read_command).execute.stdout
     end
 
+    # Internal: update_tags(updates)
+    # This wraps FFmpeg's -metadata command.
+    #
+    # Examples
+    #   filepath = 'spec/support/sample.flac'
+    #   ffmpeg = FFmpeg.new(filepath)
+    #   ffmpeg.update_tags({artist: 'New Artist'})
+    #
+    def update_tags(updates)
+      @updates = updates
+      Commander.new(*write_command).execute
+      self.restore('/tmp')
+    end
+
     private
     def read_command
-      %W{ffprobe -show_format} + %W{#{@filepath}}
+      %W{ffprobe -show_format} + %W{#{filepath}}
+    end
+
+    def write_command
+      %W{ffmpeg -i #{filepath}} + write_options + %W{#{self.tmppath}}
+    end
+
+    def write_options
+      @updates.inject(%W{}) do |options,update|
+        options << '-metadata' << update.join('=')
+      end
     end
   end
 end
