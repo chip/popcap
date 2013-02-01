@@ -44,11 +44,11 @@ module Mayfly
     end
 
     # Internal: Open3.capture3 returns an array of three elements.
-    # The third element returned is status.  Status can have a 
+    # The third element returned is status.  Status can have a
     # 'success?' of true or false.
     #
     # Examples
-    # 
+    #
     #   self.status.success?
     #   # => true
     #

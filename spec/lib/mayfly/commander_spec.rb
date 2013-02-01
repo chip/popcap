@@ -44,7 +44,7 @@ module Mayfly
       command = Commander.new('blah').execute
       expect(command.stderr).to eq('bar')
     end
-    
+
     context '#status' do
       it 'is true if it succeeds' do
         succeeded = double('status', success?: true)

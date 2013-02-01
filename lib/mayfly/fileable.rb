@@ -3,8 +3,8 @@ require 'fileutils'
 module Mayfly
   PathError = Class.new(StandardError)
 
-  # Public: This is a wrapper for the File & FileUtils Ruby 
-  # Standard Libraries.  The module requires it be included in 
+  # Public: This is a wrapper for the File & FileUtils Ruby
+  # Standard Libraries.  The module requires it be included in
   # a class which has a #filepath method that returns a filepath.
   #
   module Fileable
@@ -49,7 +49,7 @@ module Mayfly
     # Public: This will restore a file from the backup path.
     # It will raise an error if file has no backup path.
     #
-    # from_path - The path from which to restore.  It defaults 
+    # from_path - The path from which to restore.  It defaults
     # to the #backup_path.
     #
     # Examples

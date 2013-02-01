@@ -32,9 +32,9 @@ module Mayfly
     # Updates existing tags, adds a tag if it does not exist.
     #
     # updates - This takes a hash of keys matching a tag name with a value.
-    # 
+    #
     # Examples
-    #   
+    #
     #   audio_file.update_tags({artist: 'New Artist', album: 'New Album'})
     #
     def update_tags(updates)
