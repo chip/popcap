@@ -20,7 +20,7 @@ module Mayfly
     end
 
     # Internal: read_tags
-    # Returns the raw output of FFProbe's show_format option
+    # Returns the raw output of FFProbe's show_format option.
     #
     # Examples
     #
