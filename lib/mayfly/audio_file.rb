@@ -27,5 +27,18 @@ module Mayfly
     def raw_tags
       FFmpeg.new(@filepath).read_tags
     end
+
+    # Public: update_tags(updates)
+    # Updates existing tags, adds a tag if it does not exist.
+    #
+    # updates - This takes a hash of keys matching a tag name with a value.
+    # 
+    # Examples
+    #   
+    #   audio_file.update_tags({artist: 'New Artist', album: 'New Album'})
+    #
+    def update_tags(updates)
+      FFmpeg.new(@filepath).update_tags(updates)
+    end
   end
 end

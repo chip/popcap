@@ -23,27 +23,6 @@ module MayflySpecHelper
       EOF
     end
 
-    def updated_tags
-      <<-EOF.gsub(/^\s+/,'')
-        [FORMAT]
-        filename=spec/support/sample.flac
-        nb_streams=1
-        format_name=flac
-        format_long_name=raw FLAC
-        start_time=N/A
-        duration=1.000000
-        size=18291
-        bit_rate=146328
-        TAG:GENRE=Sample Genre
-        TAG:track=01
-        TAG:ALBUM=New Album
-        TAG:DATE=2012
-        TAG:TITLE=Sample Title
-        TAG:ARTIST=New Artist
-        [/FORMAT]
-      EOF
-    end
-
     def setup
       FileUtils.cp('spec/support/sample.flac', 'spec/support/backup.flac')
     end
