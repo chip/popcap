@@ -29,9 +29,6 @@ module Mayfly
       let(:input) { %W{ffmpeg -i spec/support/sample.flac} }
       let(:new_tags) { {artist: 'New'} }
 
-      before { MayflySpecHelper.setup }
-      after { MayflySpecHelper.teardown }
-
       it 'updates tags on a temp file & copies temp file to original' do
         update = %W{-metadata artist=New /tmp/sample.flac}
         Commander.should_receive(:new).with(*(input + update)) { commander }
