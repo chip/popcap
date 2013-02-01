@@ -2,7 +2,6 @@ require 'fileutils'
 
 module Mayfly
   PathError = Class.new(StandardError)
-  RestoreError = Class.new(StandardError)
 
   # Public: This is a wrapper for the File & FileUtils Ruby 
   # Standard Libraries.  The module requires it be included in 
@@ -13,12 +12,13 @@ module Mayfly
     # Public: This will backup a file to a specified directory.
     #
     # backup_dir - path to a directory on the filesystem.
+    # It defaults to '/tmp'.
     #
     # Examples
-    #   audio_file.backup('/tmp')
-    #   # => file is copied to '/tmp'
+    #   audio_file.backup('/usr')
+    #   # => file is copied to '/usr'
     #
-    def backup(backup_dir)
+    def backup(backup_dir='/tmp')
       @backup_dir = backup_dir
       FileUtils.cp(self.filepath, backup_path)
     end
@@ -49,22 +49,36 @@ module Mayfly
     # Public: This will restore a file from the backup path.
     # It will raise an error if file has no backup path.
     #
+    # from_path - The path from which to restore.  It defaults 
+    # to the #backup_path.
+    #
     # Examples
     #   klass = SomeClass.new('path/to/file.txt').backup('/tmp')
     #   klass.restore
     #
-    def restore
-      raise(RestoreError, file_restore_error_message) unless @backup_dir
-      FileUtils.mv(backup_path, self.filepath)
+    def restore(from_path=nil)
+      @from_path = from_path
+      FileUtils.mv(restore_path, self.filepath)
+    end
+
+    # Public: This returns a temporary path for the file.
+    #
+    # Examples
+    #   klass = SomeClass.new('path/to/file.txt').tmppath
+    #   # => '/tmp/file.txt'
+    #
+    def tmppath
+      '/tmp/' + filename
     end
 
     private
-    def file_restore_error_message
-      'Cannot restore a file which has not been backed up.'
+    def backup_path_error_message
+      'Cannot determine backup path.'
     end
 
-    def backup_path_error_message
-      'Cannot show backup path if file has not been backed up.'
+    def restore_path
+      return backup_path unless @from_path
+      @from_path + '/' + filename
     end
   end
 end

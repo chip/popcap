@@ -23,10 +23,14 @@ module Mayfly
 
     context '#backup' do
       it 'backs up file to directory' do
-        FileUtils.should_receive(:cp).with(filepath, '/tmp/sample.flac')
-        fc.backup('/tmp')
+        FileUtils.should_receive(:cp).with(filepath, '/usr/sample.flac')
+        fc.backup('/usr')
       end
 
+      it 'backup directory defaults to "/tmp"' do
+        FileUtils.should_receive(:cp).with(filepath, '/tmp/sample.flac')
+        fc.backup
+      end
     end
 
     context '#backup_path' do
@@ -42,15 +46,22 @@ module Mayfly
     end
 
     context '#restore' do
-      it 'restores a file from a backup path' do
+      it 'takes an optional path' do
+        FileUtils.should_receive(:mv).with('/tmp/sample.flac', filepath)
+        fc.restore('/tmp')
+      end
+
+      it 'defaults to the backup path' do
         FileUtils.should_receive(:cp).with(filepath, '/tmp/sample.flac')
         fc.backup('/tmp')
         FileUtils.should_receive(:mv).with('/tmp/sample.flac', filepath)
         fc.restore
       end
+    end
 
-      it 'raises an error if no backup path' do
-        expect{fc.restore}.to raise_error(RestoreError)
+    context '#tmppath' do
+      it 'returns a temporary path' do
+        expect(fc.tmppath).to eq '/tmp/sample.flac'
       end
     end
   end
