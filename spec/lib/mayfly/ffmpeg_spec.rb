@@ -1,13 +1,19 @@
 require 'spec_helper'
-require 'support/mayfly_spec_helper'
 require 'mayfly/ffmpeg'
 
 module Mayfly
   describe FFmpeg do
-    let(:ffmpeg) { FFmpeg.new('spec/support/sample.flac' ) }
+    let(:filepath) { 'spec/support/sample.flac' }
+    let(:ffmpeg) { FFmpeg.new(filepath) }
 
-    it 'reads tags from a file' do
-      expect(ffmpeg.read_tags).to eq MayflySpecHelper.raw_tags
+    it 'sends a read command to Commander' do
+      commander = double('Commander')
+      executed = double('executed')
+      command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
+      Commander.should_receive(:new).with(*command) { commander }
+      commander.should_receive(:execute) { executed }
+      executed.should_receive(:stdout)
+      ffmpeg.read_tags
     end
   end
 end
