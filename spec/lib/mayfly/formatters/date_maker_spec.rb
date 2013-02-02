@@ -1,4 +1,5 @@
 require 'mayfly/formatters/date_maker'
+require 'spec_helper'
 
 module Mayfly
   module Formatters

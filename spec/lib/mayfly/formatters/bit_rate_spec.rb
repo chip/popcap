@@ -1,4 +1,5 @@
 require 'mayfly/formatters/bit_rate'
+require 'spec_helper'
 
 module Mayfly
   module Formatters
