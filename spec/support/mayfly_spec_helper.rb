@@ -23,6 +23,25 @@ module MayflySpecHelper
       EOF
     end
 
+    def to_hash
+      {
+        filename: 'spec/support/sample.flac',
+        nb_streams: '1',
+        format_name: 'flac',
+        format_long_name: 'raw FLAC',
+        start_time: 'N/A',
+        duration: '1.000000',
+        filesize: '18291',
+        bit_rate: '146328',
+        genre: 'Sample Genre',
+        track: '01',
+        album: 'Sample Album',
+        date: '2012',
+        title: 'Sample Title',
+        artist: 'Sample Artist'
+      }
+    end
+
     def setup
       FileUtils.cp('spec/support/sample.flac', 'spec/support/backup.flac')
     end
