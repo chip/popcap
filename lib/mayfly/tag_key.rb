@@ -2,6 +2,8 @@ module Mayfly
   # Internal: This class sanitizes the raw output of FFmpeg to
   # be used as a hash key.
   #
+  # key - This is a single key as created by TagLine.
+  #
   class TagKey
     def initialize(key)
       @key = key
