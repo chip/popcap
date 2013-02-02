@@ -14,6 +14,11 @@ module Mayfly
     # 'size' to 'filesize' in order to avoid potential conflicts
     # with Ruby's build-in method of the same name.
     #
+    # Examples
+    #   tk = TagKey.new('size')
+    #   tk.format
+    #   # => :filesize
+    #
     def format
       return '' if ( @key.nil? || @key.empty? )
 
