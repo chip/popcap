@@ -16,7 +16,7 @@ module Mayfly
     #
     #   klass = SomeClass.new
     #   klass.to_hash
-    #   # => 
+    #   # =>
     #       { filename: 'spec/support/sample.flac',
     #         format_name: 'flac',
     #         duration: '1.000000',
