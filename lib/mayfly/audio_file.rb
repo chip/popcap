@@ -1,4 +1,5 @@
 require 'mayfly/ffmpeg'
+require 'mayfly/taggable'
 
 module Mayfly
   # Public: This is a class for managing audio files on the filesystem.
@@ -12,6 +13,7 @@ module Mayfly
   #
   #
   class AudioFile
+    include Taggable
 
     # Public: Initialize
     #
