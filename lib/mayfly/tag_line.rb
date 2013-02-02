@@ -15,6 +15,11 @@ module Mayfly
     # first equal sign in a single line of content from FFmpeg.
     # It uses TagKey to create the key for the hash.
     #
+    # Examples
+    #   tl = TagLine.new('TAG:ARTIST=David Bowie')
+    #   to.to_hash
+    #   # => {artist: 'David Bowie'}
+    #
     def to_hash
       return {} unless ( @line && is_a_tag? )
       key,val = @line.split('=',2)
