@@ -36,6 +36,26 @@ module Mayfly
       "#{@backup_dir}/" + filename
     end
 
+    # Public: This will remove the file from the system.
+    #
+    # Examples
+    #   klass = SomeClass.new('path/to/file.txt')
+    #   klass.destroy
+    #
+    def destroy
+      FileUtils.rm_f(self.filepath)
+    end
+
+    # Public: This will return the directory, excluding the filename.
+    #
+    # Examples
+    #   SomeClass.new('path/to/file.txt').directory
+    #   # => 'path/to/'
+    #
+    def directory
+      File.dirname(self.filepath)
+    end
+
     # Public: This will return the filename, excluding directory.
     #
     # Examples
@@ -44,6 +64,33 @@ module Mayfly
     #
     def filename
       File.basename(self.filepath)
+    end
+
+    # Public: This method moves a file to destination.
+    #
+    # destination - The folder/directory to move the file.
+    #
+    # Examples
+    #   klass = SomeClass.new('path/to/file.txt')
+    #   klass.move('/tmp')
+    #   # => '/tmp/file.txt'
+    #
+    def move(destination)
+      FileUtils.mv(self.filepath, destination)
+    end
+
+    # Public: This method renames a file.
+    #
+    # new_name - The new name of the file.
+    #
+    # Examples
+    #   klass = SomeClass.new('path/to/file.txt')
+    #   klass.rename('rename.txt')
+    #   # => 'path/to/rename.txt'
+    #
+    def rename(new_name)
+      new_path = self.directory + '/' + new_name
+      FileUtils.mv(self.filepath, new_path)
     end
 
     # Public: This will restore a file from the backup path.

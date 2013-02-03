@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'mayfly/fileable'
+require 'support/mayfly_spec_helper'
 
 module Mayfly
   describe Fileable do
@@ -62,6 +63,35 @@ module Mayfly
     context '#tmppath' do
       it 'returns a temporary path' do
         expect(fc.tmppath).to eq '/tmp/sample.flac'
+      end
+    end
+
+    context '#destroy' do
+      it 'removes a file' do
+        FileUtils.should_receive(:rm_f).with(filepath)
+        fc.destroy
+      end
+    end
+
+    context '#rename' do
+      it 'removes a file with specified name' do
+        new_name = 'spec/support/example.file'
+        FileUtils.should_receive(:mv).with(filepath, new_name)
+        fc.rename('example.file')
+      end
+    end
+
+    context '#move' do
+      it 'moves a file to directory' do
+        destination = '/tmp'
+        FileUtils.should_receive(:mv).with(filepath, destination)
+        fc.move('/tmp')
+      end
+    end
+
+    context '#directory' do
+      it 'returns the directory path for the file' do
+        expect(fc.directory).to eq 'spec/support'
       end
     end
   end
