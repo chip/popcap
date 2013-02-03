@@ -44,6 +44,7 @@ module Mayfly
     #
     def destroy
       FileUtils.rm_f(self.filepath)
+      self.filepath = nil
     end
 
     # Public: This will return the directory, excluding the filename.
@@ -77,6 +78,7 @@ module Mayfly
     #
     def move(destination)
       FileUtils.mv(self.filepath, destination)
+      self.filepath = destination + '/' + filename
     end
 
     # Public: This method renames a file.
@@ -91,6 +93,7 @@ module Mayfly
     def rename(new_name)
       new_path = self.directory + '/' + new_name
       FileUtils.mv(self.filepath, new_path)
+      self.filepath = new_path
     end
 
     # Public: This will restore a file from the backup path.

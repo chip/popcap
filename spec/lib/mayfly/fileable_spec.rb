@@ -5,7 +5,7 @@ require 'support/mayfly_spec_helper'
 module Mayfly
   describe Fileable do
     class FileClass
-      attr_reader :filepath
+      attr_accessor :filepath
 
       include Fileable
       def initialize(filepath)
@@ -71,6 +71,12 @@ module Mayfly
         FileUtils.should_receive(:rm_f).with(filepath)
         fc.destroy
       end
+      
+      it 'blanks out filepath' do
+        FileUtils.should_receive(:rm_f).with(filepath)
+        fc.destroy
+        expect(fc.filepath).to be_nil
+      end
     end
 
     context '#rename' do
@@ -79,6 +85,13 @@ module Mayfly
         FileUtils.should_receive(:mv).with(filepath, new_name)
         fc.rename('example.file')
       end
+
+      it 'updates filepath' do
+        new_name = 'spec/support/example.file'
+        FileUtils.should_receive(:mv).with(filepath, new_name)
+        fc.rename('example.file')
+        expect(fc.filepath).to eq('spec/support/example.file')
+      end
     end
 
     context '#move' do
@@ -86,6 +99,13 @@ module Mayfly
         destination = '/tmp'
         FileUtils.should_receive(:mv).with(filepath, destination)
         fc.move('/tmp')
+      end
+
+      it 'updates filepath' do
+        destination = '/tmp'
+        FileUtils.should_receive(:mv).with(filepath, destination)
+        fc.move('/tmp')
+        expect(fc.filepath).to eq('/tmp/sample.flac')
       end
     end
 
