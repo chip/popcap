@@ -8,7 +8,7 @@ module Mayfly
     #           The start_date defaults to 1800, end_date defaults
     #           to 2100.
     #
-    class DateMaker
+    class Date
       attr_reader :start_date, :end_date
 
       def initialize(date, options={})
@@ -18,7 +18,7 @@ module Mayfly
       end
 
       # Internal:  This method returns a year if it is matched.
-      def format_date
+      def format
         return unless ( date_match && within_date_range? )
         @match[0].to_i
       end
