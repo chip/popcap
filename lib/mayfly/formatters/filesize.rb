@@ -18,10 +18,10 @@ module Mayfly
       #
       # Examples
       #   fs = Filesize.new(12345678)
-      #   fs.format_filesize
+      #   fs.format
       #   # => '11.8M'
       #
-      def format_filesize
+      def format
         return if @filesize.to_i == 0
         return warning_message if too_large?
         converted_filesize.to_s + measurement_character

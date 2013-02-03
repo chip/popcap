@@ -14,10 +14,10 @@ module Mayfly
       #
       # Examples
       #   dur = Duration.new(420)
-      #   dur.format_duration
+      #   dur.format
       #   # => '7:00'
       #
-      def format_duration
+      def format
         return unless @time.to_i > 0
         return warning_message if over_twenty_four_hours?
         remove_leading_zeroes(to_strftime)

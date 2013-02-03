@@ -18,6 +18,12 @@ module Mayfly
       end
 
       # Internal:  This method returns a year if it is matched.
+      #
+      # Examples
+      #   date = Date.new('October 5, 1975')
+      #   date.format
+      #   # => '1975'
+      #
       def format
         return unless ( date_match && within_date_range? )
         @match[0].to_i

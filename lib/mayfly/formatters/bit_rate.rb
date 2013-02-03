@@ -17,10 +17,10 @@ module Mayfly
       #
       # Examples
       #   br = BitRate.new(128456)
-      #   br.format_bit_rate
+      #   br.format
       #   # => '128 kb/s'
       #
-      def format_bit_rate
+      def format
         return unless @bitrate.to_i > 0
         @bitrate.to_s[0..-4] + ' kb/s'
       end
