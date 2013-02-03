@@ -37,5 +37,17 @@ module Mayfly
         ffmpeg.update_tags(new_tags)
       end
     end
+
+    context '#convert' do
+      it 'converts from input format to specified output format & bitrate' do
+        input = %W{ffmpeg -i spec/support/sample.flac}
+        options = %W{-ab 64k}
+        output = %W{spec/support/sample.mp3}
+        Commander.should_receive(:new).with(*(input + options + output)).
+          and_return(commander)
+        commander.should_receive(:execute)
+        ffmpeg.convert(:mp3, 64)
+      end
+    end
   end
 end

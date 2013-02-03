@@ -1,4 +1,5 @@
 require 'mayfly/commander'
+require 'mayfly/converter'
 require 'mayfly/fileable'
 
 module Mayfly
@@ -10,6 +11,7 @@ module Mayfly
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg
+    include Converter
     include Fileable
 
     attr_reader :filepath
@@ -20,6 +22,17 @@ module Mayfly
     #
     def initialize(filepath)
       @filepath = filepath
+    end
+
+    # Internal: convert
+    # This command calls up to Converter@convert.
+    #
+    # format - A valid audio file format as string or symbol.
+    # bitrate = A valid bit rate as string or symbol.
+    #
+    def convert(format, bitrate=192)
+      conversion = super(format,bitrate)
+      Commander.new(*conversion).execute
     end
 
     # Internal: read_tags
