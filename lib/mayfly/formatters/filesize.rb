@@ -6,8 +6,8 @@ module Mayfly
     # filesize - Provide a filesize as string, integer, or float.
     #
     class Filesize
-      BASE = 1024
-      UNITS = %W{B K M G T}
+      ::BASE = 1024
+      ::UNITS = %W{B K M G T}
 
       def initialize(filesize)
         @filesize = filesize
@@ -29,7 +29,7 @@ module Mayfly
 
       private
       def binary_filesize
-        float / BASE ** exponent
+        float / ::BASE ** exponent
       end
 
       def converted_filesize
@@ -38,7 +38,7 @@ module Mayfly
       end
 
       def exponent
-        (Math.log(float)/Math.log(BASE)).to_i
+        (Math.log(float)/Math.log(::BASE)).to_i
       end
 
       def float
@@ -50,7 +50,7 @@ module Mayfly
       end
 
       def measurement_character
-        UNITS[exponent]
+        ::UNITS[exponent]
       end
 
       def rounded_filesize
