@@ -1,6 +1,6 @@
 module Mayfly
   module Formatters
-    # Internal: This will format a duration tag as strftime.
+    # Public: This will format a duration tag as strftime.
     #
     # time - Provide a string, float, or integer.
     class Duration
@@ -8,7 +8,7 @@ module Mayfly
         @time = time
       end
 
-      # Internal: This will format a duration tag as strftime.
+      # Public: This will format a duration tag as strftime.
       # It will raise a warning if the time is greater than 24 hours.
       # Leading zeroes & colons are removed.
       #

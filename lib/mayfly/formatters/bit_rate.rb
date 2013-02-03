@@ -1,6 +1,6 @@
 module Mayfly
   module Formatters
-    # Internal: This is a formatter for the bit_rate tag.  It is used
+    # Public: This is a formatter for the bit_rate tag.  It is used
     # to make the bitrate human readable.
     #
     # bitrate - The bitrate can be sent as a string or integer.
@@ -10,7 +10,7 @@ module Mayfly
         @bitrate = bitrate
       end
 
-      # Internal: This method returns a bitrate represented in kilobytes.
+      # Public: This method returns a bitrate represented in kilobytes.
       #
       # It returns nil for anything that is not a number greater than
       # zero.

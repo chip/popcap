@@ -1,6 +1,6 @@
 module Mayfly
   module Formatters
-    # Internal: This is a formatter for the date tag.  It is used
+    # Public: This is a formatter for the date tag.  It is used
     # to match and return the year.
     #
     # date - The date can be sent as a string or integer.
@@ -17,7 +17,7 @@ module Mayfly
         @end_date = options[:end_date] || 2100
       end
 
-      # Internal:  This method returns a year if it is matched.
+      # Public:  This method returns a year if it is matched.
       #
       # Examples
       #   date = Date.new('October 5, 1975')

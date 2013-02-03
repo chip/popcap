@@ -1,6 +1,6 @@
 module Mayfly
   module Formatters
-    # Internal: This class formats a filesize as human readable,
+    # Public: This class formats a filesize as human readable,
     # following a UNIX formatting standard.
     #
     # filesize - Provide a filesize as string, integer, or float.
@@ -13,7 +13,7 @@ module Mayfly
         @filesize = filesize
       end
 
-      # Internal: This method will format the filesize.
+      # Public: This method will format the filesize.
       # It raises a warning message if size is greater than 999 terabytes.
       #
       # Examples
