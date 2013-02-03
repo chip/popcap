@@ -13,6 +13,8 @@ module Mayfly
   #
   #
   class AudioFile
+    attr_reader :filepath
+
     include Fileable
     include Taggable
 
