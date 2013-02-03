@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'ostruct'
 
 module MayflySpecHelper
   class << self
@@ -40,6 +41,25 @@ module MayflySpecHelper
         title: 'Sample Title',
         artist: 'Sample Artist'
       }
+    end
+
+    def tags
+      OpenStruct.new(
+        {
+        filename: 'spec/support/sample.flac',
+        nb_streams: '1',
+        format_name: 'flac',
+        format_long_name: 'raw FLAC',
+        start_time: 'N/A',
+        duration: '1',
+        filesize: '17.9K',
+        bit_rate: '146 kb/s',
+        genre: 'Sample Genre',
+        track: '01',
+        album: 'Sample Album',
+        date: 2012,
+        title: 'Sample Title',
+        artist: 'Sample Artist' })
     end
 
     def setup

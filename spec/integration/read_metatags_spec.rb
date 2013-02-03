@@ -13,4 +13,8 @@ describe Mayfly do
   it '#to_hash' do
     expect(audio_file.to_hash).to eq MayflySpecHelper.to_hash
   end
+
+  it '#tags' do
+    expect(audio_file.tags).to eq MayflySpecHelper.tags
+  end
 end
