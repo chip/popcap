@@ -23,8 +23,45 @@ module Mayfly
       @filepath = filepath
     end
 
+    # Public: convert
+    # This method converts an audio file between formats.
+    # It takes an optional bitrate for mp3 formats.
+    #
+    # format - A valid audio file format as string or symbol.
+    # bitrate - An optional bitrate for mp3s.
+    #
+    # Examples
+    #   audio_file = AudioFile.new('spec/support/sample.flac')
+    #   audio_file.convert('mp3', 128)
+    #   # => 'spec/support/sample.mp3'
+    #
+    def convert(format, bitrate=192)
+      FFmpeg.new(@filepath).convert(format, bitrate)
+    end
+
     # Public: raw_tags
-    # Returns the raw output of FFProbe's show_format option.
+    # This method returns the raw_tags from FFmpeg.
+    #
+    # Examples
+    #   audio_file = AudioFile.new('spec/support/sample.flac')
+    #   audio_file.raw_tags
+    #   # =>
+    #    [FORMAT]
+    #    filename=spec/support/sample.flac
+    #    nb_streams=1
+    #    format_name=flac
+    #    format_long_name=raw FLAC
+    #    start_time=N/A
+    #    duration=1.000000
+    #    size=18291
+    #    bit_rate=146328
+    #    TAG:GENRE=Sample Genre
+    #    TAG:track=01
+    #    TAG:ALBUM=Sample Album
+    #    TAG:DATE=2012
+    #    TAG:TITLE=Sample Title
+    #    TAG:ARTIST=Sample Artist
+    #    [/FORMAT]
     #
     def raw_tags
       FFmpeg.new(@filepath).read_tags

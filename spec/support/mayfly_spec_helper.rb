@@ -62,6 +62,10 @@ module MayflySpecHelper
         artist: 'Sample Artist' })
     end
 
+    def remove_converted
+      FileUtils.rm_f('spec/support/sample.mp3')
+    end
+
     def setup
       FileUtils.cp('spec/support/sample.flac', 'spec/support/backup.flac')
     end
