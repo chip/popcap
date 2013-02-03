@@ -33,7 +33,7 @@ module Mayfly
     #   # => 'ActiveRecord::Base'
     #
     def namespace
-      camelize.split('/').map do |word| 
+      camelize.split('/').map do |word|
         _,head,tail = word.partition(%r(^[a-z]|[A-Z]))
         head.upcase + tail
       end.join('::')

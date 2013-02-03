@@ -41,7 +41,8 @@ module Mayfly
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @hash ||= lines.inject({}) { |hash,line| hash.merge(TagLine.new(line)).to_hash }
+      @hash ||=
+        lines.inject({}) { |hash,line| hash.merge(TagLine.new(line)).to_hash }
     end
 
     # Public: This method builds an OpenStruct from #to_hash. Also,
