@@ -13,6 +13,7 @@ module Mayfly
   #
   #
   class AudioFile
+    include Fileable
     include Taggable
 
     # Public: Initialize
