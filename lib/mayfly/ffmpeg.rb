@@ -14,7 +14,7 @@ module Mayfly
     include Converter
     include Fileable
 
-    attr_reader :filepath
+    attr_accessor :filepath
 
     # Internal: initialize
     #
