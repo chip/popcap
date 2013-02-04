@@ -34,7 +34,7 @@ module Mayfly
     #
     def namespace
       camelize.split('/').map do |word|
-        _,head,tail = word.partition(%r(^[a-z]|[A-Z]))
+        _,head,tail = word.partition(%r(^[a-zA-Z]))
         head.upcase + tail
       end.join('::')
     end
