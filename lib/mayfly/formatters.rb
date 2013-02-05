@@ -23,8 +23,8 @@ module Mayfly
     #
     ::INCLUDED_FORMATTERS = {}
 
-    Dir["lib/mayfly/formatters/*.rb"].each do |path|
-      file_name = File.basename(path, '.rb')
+    Dir["#{File.dirname(__FILE__)}/formatters/*.rb"].each do |path|
+      file_name = File.basename(path , '.rb')
       required = 'mayfly/formatters/' + file_name
       require required
       ::INCLUDED_FORMATTERS[file_name.to_sym] = required
