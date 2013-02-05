@@ -2,10 +2,10 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'pop_cap'
+require 'popcap'
 
 Gem::Specification.new do |s|
-  s.name        = 'pop_cap'
+  s.name        = 'popcap'
   s.version     = PopCap::VERSION
   s.authors     = ["Culley Smith"]
   s.email       = ["culley.smith@gmail.com"]
