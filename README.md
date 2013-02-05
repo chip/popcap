@@ -14,7 +14,8 @@ Song = Class.new(Mayfly::AudioFile)
 song = Song.new('path/to/sample.flac')
 ```
 
-_Read Tags_
+Read Tags
+---------
 
 Read the metadata tags in an audio file.  With this, you can return & manipulate the raw output of ffprobe -show_format.
 
@@ -72,7 +73,8 @@ audio_file.tags => Returns a Ruby OpenStruct after applying formatters #to_hash.
     .track             =>  '01'
 ```
 
-_Update_Tags_
+Update Tags
+-----------
 
 This will update the metadata tags for an audio file.  It will also dynamically add any newly provided tags.  It takes a hash of attributes.
 
@@ -83,7 +85,8 @@ audio_file.update_tags({artist: 'David Bowie'})
 audio_file.update_tags({fancy_new_tag: 'Custom Tag Input'})
 ```
 
-_Convert_
+Convert
+-------
 
 This will convert between audio file formats.  It is restricted to basic audio formats.  It also takes an optional bitrate for mp3 formats.  The original file is preserved during the conversion.
 
@@ -98,7 +101,8 @@ audio_file.convert(:mp3) # => default bitrate is 192k
 audio_file.convert(:mp3, 256)
 ```
 
-_File Management Options_
+File Management Options
+-----------------------
 
 Various Ruby File & FileUtils methods are wrapped for convenience.
 
@@ -127,4 +131,5 @@ audio_file.tmppath # => returns the temporary path, e.g. '/tmp/sample.flac'
 
 Dependencies
 ------------
+
 [FFmpeg](http://ffmpeg.org)
