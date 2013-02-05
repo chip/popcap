@@ -10,10 +10,12 @@ module Mayfly
     subject { audio_file }
 
     context '#filepath' do
-      its(:filepath) { should eq filepath }
+      its(:filepath) { should eq File.realpath(filepath) }
 
       it 'raises an error if file does not exist' do
-        expect { AudioFile.new('not here.file') }.to raise_error(FileNotFound)
+        expect do 
+          AudioFile.new('not here.file') 
+        end.to raise_error(FileNotFound, 'not here.file')
       end
     end
 

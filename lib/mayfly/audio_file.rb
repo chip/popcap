@@ -24,8 +24,8 @@ module Mayfly
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
     def initialize(filepath)
-      raise FileNotFound unless File.exists?(filepath)
-      @filepath = filepath
+      raise(FileNotFound, filepath) unless File.exists?(filepath)
+      @filepath = File.realpath(filepath)
     end
 
     # Public: convert

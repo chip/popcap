@@ -6,7 +6,7 @@ module MayflySpecHelper
     def raw_tags
       <<-EOF.gsub(/^\s+/,'')
         [FORMAT]
-        filename=spec/support/sample.flac
+        filename=#{File.realpath('spec/support/sample.flac')}
         nb_streams=1
         format_name=flac
         format_long_name=raw FLAC
@@ -26,7 +26,7 @@ module MayflySpecHelper
 
     def to_hash
       {
-        filename: 'spec/support/sample.flac',
+        filename: File.realpath('spec/support/sample.flac'),
         nb_streams: '1',
         format_name: 'flac',
         format_long_name: 'raw FLAC',
@@ -46,7 +46,7 @@ module MayflySpecHelper
     def tags
       OpenStruct.new(
         {
-        filename: 'spec/support/sample.flac',
+        filename: File.realpath('spec/support/sample.flac'),
         nb_streams: '1',
         format_name: 'flac',
         format_long_name: 'raw FLAC',
