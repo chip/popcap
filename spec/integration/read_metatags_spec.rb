@@ -1,20 +1,20 @@
-require 'mayfly'
+require 'pop_cap'
 require 'spec_helper'
-require 'support/mayfly_spec_helper'
+require 'support/pop_cap_spec_helper'
 
-describe Mayfly do
-  let(:audio_file) { Mayfly::AudioFile.new(filepath) }
+describe PopCap do
+  let(:audio_file) { PopCap::AudioFile.new(filepath) }
   let(:filepath) { 'spec/support/sample.flac' }
 
   it '#raw_tags' do
-    expect(audio_file.raw_tags).to eq MayflySpecHelper.raw_tags
+    expect(audio_file.raw_tags).to eq PopCapSpecHelper.raw_tags
   end
 
   it '#to_hash' do
-    expect(audio_file.to_hash).to eq MayflySpecHelper.to_hash
+    expect(audio_file.to_hash).to eq PopCapSpecHelper.to_hash
   end
 
   it '#tags' do
-    expect(audio_file.tags).to eq MayflySpecHelper.tags
+    expect(audio_file.tags).to eq PopCapSpecHelper.tags
   end
 end

@@ -1,14 +1,14 @@
-require 'mayfly'
+require 'pop_cap'
 require 'spec_helper'
-require 'support/mayfly_spec_helper'
+require 'support/pop_cap_spec_helper'
 
-describe Mayfly do
-  let(:audio_file) { Mayfly::AudioFile.new(filepath) }
+describe PopCap do
+  let(:audio_file) { PopCap::AudioFile.new(filepath) }
   let(:filepath) { 'spec/support/sample.flac' }
 
   context '#update_tags' do
-    before { MayflySpecHelper.setup }
-    after { MayflySpecHelper.teardown }
+    before { PopCapSpecHelper.setup }
+    after { PopCapSpecHelper.teardown }
 
     it 'updates tags for file' do
       updates = {artist: 'New Artist'}

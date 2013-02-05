@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'support/mayfly_spec_helper'
-require 'mayfly/audio_file'
+require 'support/pop_cap_spec_helper'
+require 'pop_cap/audio_file'
 
-module Mayfly
+module PopCap
   describe 'Convert Audio Files' do
-    after { MayflySpecHelper.remove_converted }
+    after { PopCapSpecHelper.remove_converted }
 
     it 'creates a new audio file with the specified format & bitrate' do
       audio_file = AudioFile.new('spec/support/sample.flac')

@@ -1,16 +1,16 @@
-Mayfly
+PopCap
 ======
 
-Mayfly is an audio file management library.  It wraps some functionality from FFmpeg for reading & writing metadata tags, converting between audio file formats, and managing an audio file on the file system.
+PopCap is an audio file management library.  It wraps some functionality from FFmpeg for reading & writing metadata tags, converting between audio file formats, and managing an audio file on the file system.
 
 Getting Started
 ---------------
 
 ```
-gem install mayfly
-require 'mayfly'
+gem install pop_cap
+require 'pop_cap'
 
-Song = Class.new(Mayfly::AudioFile)
+Song = Class.new(PopCap::AudioFile)
 song = Song.new('path/to/sample.flac')
 ```
 
