@@ -3,8 +3,16 @@ Mayfly
 
 Mayfly is an audio file management library.  It wraps some functionality from FFmpeg for reading & writing metadata tags, converting between audio file formats, and managing an audio file on the file system.
 
-Usage
------
+Getting Started
+---------------
+
+```
+gem install mayfly
+require 'mayfly'
+
+Song = Class.new(Mayfly::AudioFile)
+song = Song.new('path/to/sample.flac')
+```
 
 _Read Tags_
 
@@ -116,3 +124,7 @@ audio_file.restore # => restores file from backup_path, takes an optional path a
 
 audio_file.tmppath # => returns the temporary path, e.g. '/tmp/sample.flac'
 ```
+
+Dependencies
+------------
+[FFmpeg](http://ffmpeg.org)
