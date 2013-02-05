@@ -1,5 +1,6 @@
 require 'mayfly/helper'
 require 'mayfly/tag_line'
+require 'mayfly/formatters'
 require 'ostruct'
 
 module Mayfly
@@ -7,15 +8,7 @@ module Mayfly
   # attribute.  It is used to parse and build tags from FFmpeg raw output.
   #
   module Taggable
-    ::FORMATTERS_PATH = 'mayfly/formatters/'
-    ::FORMATTERS = {}
-
-    Dir["lib/#{::FORMATTERS_PATH}*.rb"].each do |path|
-      file_name = File.basename(path, '.rb')
-      required = ::FORMATTERS_PATH + file_name
-      require required
-      ::FORMATTERS[file_name.to_sym] = required.sub(%r(^lib\/),'')
-    end
+    included Formatters
 
     # Internal: This method builds a sanitized hash from #raw_tags.
     #
@@ -83,7 +76,7 @@ module Mayfly
     end
 
     def formatted_hash
-      ::FORMATTERS.inject({}) do |formatted, formatter|
+      INCLUDED_FORMATTERS.inject({}) do |formatted, formatter|
         key, value = formatter
         helper = Helper.new(value)
         klass = helper.constantize
