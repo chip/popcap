@@ -9,7 +9,13 @@ module Mayfly
 
     subject { audio_file }
 
-    its(:filepath) { should eq filepath }
+    context '#filepath' do
+      its(:filepath) { should eq filepath }
+
+      it 'raises an error if file does not exist' do
+        expect { AudioFile.new('not here.file') }.to raise_error(FileNotFound)
+      end
+    end
 
     context 'ffmpeg methods' do
       it { expect(audio_file).to respond_to(:convert) }

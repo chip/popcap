@@ -2,6 +2,7 @@ require 'mayfly/ffmpeg'
 require 'mayfly/taggable'
 
 module Mayfly
+  FileNotFound = Class.new(StandardError)
   # Public: This is a class for managing audio files on the filesystem.
   # It is used to read & write metadata tags, convert between audio formats,
   # and manage a file on the filesystem using standard UNIX file commands.
@@ -23,6 +24,7 @@ module Mayfly
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
     def initialize(filepath)
+      raise FileNotFound unless File.exists?(filepath)
       @filepath = filepath
     end
 
