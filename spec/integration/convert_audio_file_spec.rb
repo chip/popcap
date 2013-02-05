@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'support/pop_cap_spec_helper'
+require 'support/popcap_spec_helper'
 require 'pop_cap/audio_file'
 
 module PopCap

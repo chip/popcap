@@ -1,6 +1,6 @@
-require 'pop_cap'
+require 'popcap'
 require 'spec_helper'
-require 'support/pop_cap_spec_helper'
+require 'support/popcap_spec_helper'
 
 describe PopCap do
   let(:audio_file) { PopCap::AudioFile.new(filepath) }

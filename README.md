@@ -7,8 +7,8 @@ Getting Started
 ---------------
 
 ```
-gem install pop_cap
-require 'pop_cap'
+gem install popcap
+require 'popcap'
 
 Song = Class.new(PopCap::AudioFile)
 song = Song.new('path/to/sample.flac')
@@ -17,10 +17,10 @@ song = Song.new('path/to/sample.flac')
 Read Tags
 ---------
 
-Read the metadata tags in an audio file.  With this, you can return & manipulate the raw output of ffprobe -show_format.
+Read the metadata tags from an audio file.
 
 ```
-audio_file = AudioFile.new('sample.flac')
+audio_file = PopCap::AudioFile.new('sample.flac')
 
 audio_file.raw_tags => Returns a string of the raw output from running ffprobe -show_format.
     [FORMAT]
@@ -79,7 +79,7 @@ Update Tags
 This will update the metadata tags for an audio file.  It will also dynamically add any newly provided tags.  It takes a hash of attributes.
 
 ```
-audio_file = AudioFile.new('sample.flac')
+audio_file = PopCap::AudioFile.new('sample.flac')
 audio_file.update_tags({artist: 'David Bowie'})
 
 audio_file.update_tags({fancy_new_tag: 'Custom Tag Input'})
@@ -94,7 +94,7 @@ Supported formats: aac, flac, m4a, mp3, ogg, wav
 Supported mp3 bitrates: 64, 128, 160, 192, 256, 320
 
 ```
-audio_file = AudioFile.new('sample.flac')
+audio_file = PopCap::AudioFile.new('sample.flac')
 
 audio_file.convert(:ogg)
 audio_file.convert(:mp3) # => default bitrate is 192k
@@ -107,7 +107,7 @@ File Management Options
 Various Ruby File & FileUtils methods are wrapped for convenience.
 
 ```
-audio_file = AudioFile.new('sample.flac')
+audio_file = PopCap::AudioFile.new('sample.flac')
 
 audio_file.backup # => default directory is '/tmp'
 audio_file.backup('some/path')

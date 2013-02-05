@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'pop_cap/fileable'
-require 'support/pop_cap_spec_helper'
+require 'support/popcap_spec_helper'
 
 module PopCap
   describe Fileable do
