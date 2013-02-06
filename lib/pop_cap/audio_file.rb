@@ -69,7 +69,17 @@ module PopCap
     #    [/FORMAT]
     #
     def raw_tags
-      FFmpeg.new(@filepath).read_tags
+      @raw_tags ||= FFmpeg.new(@filepath).read_tags
+    end
+
+    # Public: This method reloads the current instance.
+    #
+    # Examples
+    #   audio_file.reload!
+    #
+    def reload!
+      @raw_tags = nil
+      super @raw_tags
     end
 
     # Public: update_tags(updates)

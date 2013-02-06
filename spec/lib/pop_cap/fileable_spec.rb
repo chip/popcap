@@ -95,14 +95,14 @@ module PopCap
     end
 
     context '#move' do
+      let(:destination) { '/tmp' }
+      
       it 'moves a file to directory' do
-        destination = '/tmp'
         FileUtils.should_receive(:mv).with(filepath, destination)
         fc.move('/tmp')
       end
 
       it 'updates filepath' do
-        destination = '/tmp'
         FileUtils.should_receive(:mv).with(filepath, destination)
         fc.move('/tmp')
         expect(fc.filepath).to eq('/tmp/sample.flac')

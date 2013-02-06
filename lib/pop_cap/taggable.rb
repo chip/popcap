@@ -10,6 +10,12 @@ module PopCap
   module Taggable
     included Formatters
 
+    # Internal: This method reloads memoized tags.
+    def reload!(raw_tags_instance)
+      return unless raw_tags_instance.nil?
+      @to_hash, @tags = nil, nil
+    end
+    
     # Internal: This method builds a sanitized hash from #raw_tags.
     #
     # Examples
@@ -34,7 +40,7 @@ module PopCap
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @hash = 
+      @to_hash = 
         lines.inject({}) { |hash,line| hash.merge(TagLine.new(line)).to_hash }
     end
 
@@ -67,7 +73,7 @@ module PopCap
     #    .track             =>  '01'
     #
     def tags
-      OpenStruct.new(to_hash.merge(formatted_hash))
+      @tags ||= OpenStruct.new(to_hash.merge(formatted_hash))
     end
 
     private
@@ -80,7 +86,7 @@ module PopCap
         key, value = formatter
         helper = Helper.new(value)
         klass = helper.constantize
-        formatted.merge({key => klass.new(@hash[key]).format})
+        formatted.merge({key => klass.new(to_hash[key]).format})
       end
     end
   end
