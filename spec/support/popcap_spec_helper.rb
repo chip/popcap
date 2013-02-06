@@ -73,5 +73,13 @@ module PopCapSpecHelper
     def teardown
       FileUtils.mv('spec/support/backup.flac', 'spec/support/sample.flac')
     end
+
+    def benchmark(&block)
+      start = Time.now
+      raise(ArgumentError, 'Provide a block.') unless block_given?
+      yield
+      finish = Time.now
+      puts "Time elapsed: #{((finish - stop)*1000).round(3)}ms"
+    end
   end
 end
