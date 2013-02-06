@@ -1,14 +1,13 @@
 require 'pop_cap/helper'
-require 'pop_cap/tag_line'
 require 'pop_cap/formatters'
-require 'ostruct'
+require 'pop_cap/tag_line'
+require 'pop_cap/tag_struct'
 
 module PopCap
   # Internal: This module is included in anything with a #raw_tags
   # attribute.  It is used to parse and build tags from FFmpeg raw output.
   #
   module Taggable
-    TagStruct = Class.new
     included Formatters
 
     # Internal: This method reloads memoized tags.
@@ -83,10 +82,7 @@ module PopCap
     end
 
     def build_tag_struct(hash)
-      hash.each do |name,value|
-        TagStruct.class_eval { define_method(name) { value } }
-      end
-      TagStruct.new
+      TagStruct.new(hash)
     end
 
     def formatted_hash
