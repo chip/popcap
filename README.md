@@ -56,7 +56,7 @@ audio_file.to_hash => Returns a Ruby hash after sanitizing the raw output of #ra
       title: 'Sample Title',
       artist: 'Sample Artist' }
 
-audio_file.tags => Returns a Ruby OpenStruct after applying formatters #to_hash.
+audio_file.tags => Returns a tag structure after applying formatters #to_hash.
     .album             =>  'Sample Album'
     .artist            =>  'Sample Artist'
     .bit_rate          =>  '146 kb/s'

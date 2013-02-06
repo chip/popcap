@@ -8,6 +8,7 @@ module PopCap
   # attribute.  It is used to parse and build tags from FFmpeg raw output.
   #
   module Taggable
+    TagStruct = Class.new
     included Formatters
 
     # Internal: This method reloads memoized tags.
@@ -44,7 +45,7 @@ module PopCap
         lines.inject({}) { |hash,line| hash.merge(TagLine.new(line)).to_hash }
     end
 
-    # Public: This method builds an OpenStruct from #to_hash. Also,
+    # Public: This method builds an tag structure from #to_hash. Also,
     # TagFormatters are applied to any tag with a custom formatter.
     #
     # Examples
@@ -73,12 +74,19 @@ module PopCap
     #    .track             =>  '01'
     #
     def tags
-      @tags ||= OpenStruct.new(to_hash.merge(formatted_hash))
+      @tags ||= build_tag_struct(to_hash.merge(formatted_hash))
     end
 
     private
     def lines
       self.raw_tags.split("\n")
+    end
+
+    def build_tag_struct(hash)
+      hash.each do |name,value|
+        TagStruct.class_eval { define_method(name) { value } }
+      end
+      TagStruct.new
     end
 
     def formatted_hash

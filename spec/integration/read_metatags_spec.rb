@@ -9,12 +9,4 @@ describe PopCap do
   it '#raw_tags' do
     expect(audio_file.raw_tags).to eq PopCapSpecHelper.raw_tags
   end
-
-  it '#to_hash' do
-    expect(audio_file.to_hash).to eq PopCapSpecHelper.to_hash
-  end
-
-  it '#tags' do
-    expect(audio_file.tags).to eq PopCapSpecHelper.tags
-  end
 end
