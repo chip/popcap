@@ -71,6 +71,8 @@ audio_file.tags => Returns a Ruby OpenStruct after applying formatters #to_hash.
     .start_time        =>  'N/A'
     .title             =>  'Sample Title'
     .track             =>  '01'
+
+audio_file.reload! => Reload an instance of itself, useful when updating tags.
 ```
 
 Update Tags
