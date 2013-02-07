@@ -3,6 +3,7 @@ require 'pop_cap/converter'
 require 'pop_cap/fileable'
 
 module PopCap
+  MissingDependency = Class.new(Errno::ENOENT)
   # Internal: This is a wrapper for the FFmpeg C library.
   #
   # Examples
@@ -21,6 +22,7 @@ module PopCap
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
     def initialize(filepath)
+      check_for_ffmpeg_install
       @filepath = filepath
     end
 
@@ -76,6 +78,14 @@ module PopCap
     end
 
     private
+    def check_for_ffmpeg_install
+      begin
+        Open3.capture3('ffmpeg')
+      rescue Errno::ENOENT => e
+        raise MissingDependency, 'FFmpeg is not installed.'
+      end
+    end
+
     def read_command
       %W{ffprobe -show_format} + %W{#{filepath}}
     end

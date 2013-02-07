@@ -11,6 +11,14 @@ module PopCap
     it 'returns its filepath' do
       expect(ffmpeg.filepath).to eq filepath
     end
+    
+    it 'raises error if FFmpeg not installed' do
+      error_message = 'No such file or directory - FFmpeg is not installed.'
+      expect do
+        Open3.stub(:capture3).with('ffmpeg').and_raise(Errno::ENOENT)
+        FFmpeg.new('filepath')
+      end.to raise_error(MissingDependency, error_message)
+    end
 
     it 'includes Fileable' do
       expect(FFmpeg.included_modules).to include Fileable
