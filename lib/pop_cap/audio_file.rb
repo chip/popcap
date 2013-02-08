@@ -23,9 +23,10 @@ module PopCap
     #
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
-    def initialize(filepath)
+    def initialize(filepath, tag_util=FFmpeg)
       raise(FileNotFound, filepath) unless File.exists?(filepath)
       @filepath = File.realpath(filepath)
+      @tag_util = tag_util
     end
 
     # Public: convert
@@ -41,7 +42,7 @@ module PopCap
     #   # => 'spec/support/sample.mp3'
     #
     def convert(format, bitrate=192)
-      FFmpeg.new(@filepath).convert(format, bitrate)
+      @tag_util.new(@filepath).convert(format, bitrate)
     end
 
     # Public: raw_tags
@@ -69,7 +70,7 @@ module PopCap
     #    [/FORMAT]
     #
     def raw_tags
-      @raw_tags ||= FFmpeg.new(@filepath).read_tags
+      @raw_tags ||= @tag_util.new(@filepath).read_tags
     end
 
     # Public: This method reloads the current instance.
@@ -92,7 +93,7 @@ module PopCap
     #   audio_file.update_tags({artist: 'New Artist', album: 'New Album'})
     #
     def update_tags(updates)
-      FFmpeg.new(@filepath).update_tags(updates)
+      @tag_util.new(@filepath).update_tags(updates)
     end
   end
 end
