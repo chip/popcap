@@ -60,7 +60,7 @@ module PopCap
     #    [/FORMAT]
     #
     def read_tags
-      @stdout ||= Commander.new(*read_command).execute.stdout
+      @stdout ||= encode(read_output)
     end
 
     # Internal: update_tags(updates)
@@ -86,8 +86,16 @@ module PopCap
       end
     end
 
+    def encode(string)
+      string.encode!('UTF-8', 'UTF-8', invalid: :replace)
+    end
+
     def read_command
       %W{ffprobe -show_format} + %W{#{filepath}}
+    end
+
+    def read_output
+      Commander.new(*read_command).execute.stdout
     end
 
     def write_command

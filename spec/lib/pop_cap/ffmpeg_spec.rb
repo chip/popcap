@@ -26,9 +26,12 @@ module PopCap
 
     context '#read_tags' do
       it 'sends a read command to Commander' do
+        output = double('output')
         command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
         Commander.should_receive(:new).with(*command) { commander }
-        commander.stub_chain(:execute, :stdout)
+        commander.stub_chain(:execute, :stdout) { output }
+        output.should_receive(:encode!).
+          with('UTF-8', 'UTF-8', invalid: :replace)
         ffmpeg.read_tags
       end
     end

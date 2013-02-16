@@ -10,6 +10,12 @@ module PopCap
 
     subject { audio_file }
 
+    it 'test' do
+      path = '/mnt/music/B/Debut/01-bjork-human_behaviour.flac'
+      song = AudioFile.new(path)
+      puts song.tags
+    end
+
     context '#filepath' do
       its(:filepath) { should eq File.realpath(filepath) }
 
