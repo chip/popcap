@@ -6,7 +6,7 @@ module PopCap
     let(:hash) { {artist: 'Artist', date: 1984} }
     let(:ts) { TagStruct.new(hash) }
 
-    context '#new' do
+    describe '#new' do
       it 'raises error if not a hash' do
         expect do
           TagStruct.new(Array)
@@ -34,6 +34,17 @@ module PopCap
 
     it 'has a custom #to_s method' do
       expect(ts.to_s).to eq "#<PopCap::TagStruct artist: Artist, date: 1984>"
+    end
+
+    describe 'already defined methods' do
+      let(:tags) { {class: 'foo', hash: 'bar', inspect: 'baz'} }
+      let(:tag_struct) { TagStruct.new hash }
+
+      it 'does not set methods defined on class' do
+        expect(tag_struct.class).not_to eq 'foo'
+        expect(tag_struct.hash).not_to eq 'bar'
+        expect(tag_struct.inspect).not_to eq 'baz'
+      end
     end
   end
 end

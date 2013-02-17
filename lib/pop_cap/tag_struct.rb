@@ -36,7 +36,9 @@ module PopCap
 
     def define_instance_methods
       @hash.each do |key, val|
-        self.class.class_eval { define_method(key) { val } }
+        unless self.class.respond_to? key
+          define_singleton_method(key) { val }
+        end
       end
     end
   end
