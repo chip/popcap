@@ -1,4 +1,5 @@
 require 'pop_cap/tag_key'
+require 'pop_cap/formatters'
 
 module PopCap
   # Internal: This class sanitizes the raw output of FFmpeg to
@@ -7,6 +8,7 @@ module PopCap
   # line - This is a single line of raw output from FFmpeg.
   #
   class TagLine
+    include
     def initialize(line)
       @line = line
     end

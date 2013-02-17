@@ -31,13 +31,13 @@ module PopCapSpecHelper
         format_name: 'flac',
         format_long_name: 'raw FLAC',
         start_time: 'N/A',
-        duration: '1.000000',
-        filesize: '18291',
-        bit_rate: '146328',
+        duration: '1',
+        filesize: '17.9K',
+        bit_rate: '146 kb/s',
         genre: 'Sample Genre',
         track: '01',
         album: 'Sample Album',
-        date: '2012',
+        date: 2012,
         title: 'Sample Title',
         artist: 'Sample Artist'
       }

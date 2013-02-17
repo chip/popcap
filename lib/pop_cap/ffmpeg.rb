@@ -81,7 +81,7 @@ module PopCap
     def check_for_ffmpeg_install
       begin
         Open3.capture3('ffmpeg')
-      rescue Errno::ENOENT => e
+      rescue Errno::ENOENT
         raise MissingDependency, 'FFmpeg is not installed.'
       end
     end

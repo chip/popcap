@@ -24,13 +24,13 @@ module PopCap
 
       it 'is memoized' do
         sc.to_hash
-        expect(sc.instance_variable_get('@to_hash')).
+        expect(sc.instance_variable_get('@hash')).
           to eq PopCapSpecHelper.to_hash
       end
     end
 
     context '#tags' do
-      it 'builds a tag structure of Formatted tags from a hash' do
+      it 'builds a tag structure of from a hash' do
         expect(sc.tags.album).to eq PopCapSpecHelper.tags.album
         expect(sc.tags.artist).to eq PopCapSpecHelper.tags.artist
         expect(sc.tags.bit_rate).to eq PopCapSpecHelper.tags.bit_rate
