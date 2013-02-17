@@ -14,8 +14,8 @@ module PopCap
       its(:filepath) { should eq File.realpath(filepath) }
 
       it 'raises an error if file does not exist' do
-        expect do 
-          AudioFile.new('not here.file') 
+        expect do
+          AudioFile.new('not here.file')
         end.to raise_error(FileNotFound, 'not here.file')
       end
     end

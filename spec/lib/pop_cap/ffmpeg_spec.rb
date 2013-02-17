@@ -11,7 +11,7 @@ module PopCap
     it 'returns its filepath' do
       expect(ffmpeg.filepath).to eq filepath
     end
-    
+
     it 'raises error if FFmpeg not installed' do
       error_message = 'No such file or directory - FFmpeg is not installed.'
       expect do

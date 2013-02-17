@@ -15,7 +15,7 @@ module PopCap
       return unless raw_tags_instance.nil?
       @to_hash, @tags = nil, nil
     end
-    
+
     # Internal: This method builds a sanitized hash from #raw_tags.
     #
     # Examples
@@ -40,7 +40,7 @@ module PopCap
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @to_hash = 
+      @to_hash =
         lines.inject({}) { |hash,line| hash.merge(TagLine.new(line)).to_hash }
     end
 

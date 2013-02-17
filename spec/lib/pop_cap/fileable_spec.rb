@@ -71,7 +71,7 @@ module PopCap
         FileUtils.should_receive(:rm_f).with(filepath)
         fc.destroy
       end
-      
+
       it 'blanks out filepath' do
         FileUtils.should_receive(:rm_f).with(filepath)
         fc.destroy
@@ -96,7 +96,7 @@ module PopCap
 
     context '#move' do
       let(:destination) { '/tmp' }
-      
+
       it 'moves a file to directory' do
         FileUtils.should_receive(:mv).with(filepath, destination)
         fc.move('/tmp')

@@ -4,7 +4,7 @@ module PopCap
   module Formatters
     # Internal: This constant is a hash of all files in "formatters/."
     # To add new custom formatters to Taggable#tags, add the formatter
-    # to "formatters/."  
+    # to "formatters/."
     #
     # Formatters should follow this format:
     #
@@ -16,7 +16,7 @@ module PopCap
     #
     #   # lib/pop_cap/formatters/custom_formatter.rb
     #   class CustomFormatter
-    #     def format 
+    #     def format
     #       # code that formats
     #     end
     #   end
