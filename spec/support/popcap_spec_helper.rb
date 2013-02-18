@@ -72,6 +72,7 @@ module PopCapSpecHelper
 
     def teardown
       FileUtils.mv('spec/support/backup.flac', 'spec/support/sample.flac')
+      FileUtils.rm_f('spec/support/sample.mp3')
     end
 
     def benchmark(&block)

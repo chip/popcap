@@ -73,7 +73,9 @@ module PopCap
     #
     def update_tags(updates)
       @updates = updates
-      Commander.new(*write_command).execute
+      unless Commander.new(*write_command).execute.success?
+        raise(FFmpegError, write_error_message)
+      end
       self.restore('/tmp')
       @stdout = nil
     end
@@ -88,12 +90,11 @@ module PopCap
     end
 
     def encode(string)
-      @string = string
-      return @string if @string.valid_encoding?
-      original_encoding = @string.encoding.name
-      @string.encode!('UTF-16', original_encoding, undef:
+      return string if string.valid_encoding?
+      original_encoding = string.encoding.name
+      string.encode!('UTF-16', original_encoding, undef:
                      :replace, invalid: :replace)
-      @string.encode!('UTF-8')
+      string.encode!('UTF-8')
     end
 
     def read_command
@@ -101,7 +102,13 @@ module PopCap
     end
 
     def read_output
-      Commander.new(*read_command).execute.stdout
+      commander = Commander.new(*read_command).execute
+      raise(FFmpegError, read_error_message) unless commander.success?
+      commander.stdout
+    end
+
+    def read_error_message
+      "Error reading #{self.filepath}"
     end
 
     def write_command
@@ -113,5 +120,11 @@ module PopCap
         options << '-metadata' << update.join('=')
       end
     end
+
+    def write_error_message
+      "Error updating #{self.filepath}"
+    end
   end
 end
+
+FFmpegError = Class.new(StandardError)

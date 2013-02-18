@@ -4,8 +4,11 @@ require 'pop_cap/ffmpeg'
 
 module PopCap
   describe FFmpeg do
+    before { PopCapSpecHelper.setup }
+    after { PopCapSpecHelper.teardown }
+
     let(:commander) { double('Commander') }
-    let(:filepath) { 'spec/support/sample.flac' }
+    let(:filepath) { File.realpath('spec/support/sample.flac') }
     let(:ffmpeg) { FFmpeg.new(filepath) }
 
     it 'returns its filepath' do
@@ -25,20 +28,16 @@ module PopCap
     end
 
     context '#read_tags' do
+      let(:output) { double('output') }
+
       it 'sends a read command to Commander' do
-        output = double('output')
-        command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
-        Commander.should_receive(:new).with(*command) { commander }
-        commander.stub_chain(:execute, :stdout) { output }
-        output.stub(:valid_encoding?) { true }
-        ffmpeg.read_tags
+        expect(ffmpeg.read_tags).to eq PopCapSpecHelper.raw_tags
       end
 
-      it 'encodes invalid byte strings' do
-        output = double('output')
-        command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
-        Commander.should_receive(:new).with(*command) { commander }
-        commander.stub_chain(:execute, :stdout) { output }
+      it 'encodes invalid byte strings as UTF-8' do
+        Commander.stub_chain(:new, :execute) { output }
+        output.should_receive(:success?) { true }
+        output.should_receive(:stdout) { output }
         output.stub(:valid_encoding?) { false }
         output.stub_chain(:encoding, :name) { 'UTF-8' }
         output.should_receive(:encode!).
@@ -46,38 +45,51 @@ module PopCap
         output.should_receive(:encode!).with('UTF-8')
         ffmpeg.read_tags
       end
+
+      it 'raises error if could not read tags' do
+        expect do
+          failed = double('commander', :success? => false)
+          Commander.stub_chain(:new, :execute) { failed }
+          ffmpeg.read_tags
+        end.
+          to raise_error(FFmpegError, 'Error reading ' + filepath)
+      end
     end
 
     context '#update_tags' do
-      let(:input) { %W{ffmpeg -i spec/support/sample.flac} }
-      let(:new_tags) { {artist: 'New'} }
+      let(:new_tags) { {artist: 'UPDATEDARTIST'} }
 
       it 'updates tags on a temp file & copies temp file to original' do
-        update = %W{-metadata artist=New /tmp/sample.flac}
-        Commander.should_receive(:new).with(*(input + update)) { commander }
-        commander.should_receive(:execute)
-        ffmpeg.should_receive(:restore).with('/tmp')
+        expect(ffmpeg.read_tags).to match /Sample Artist/
         ffmpeg.update_tags(new_tags)
+        expect(ffmpeg.read_tags).to match /UPDATEDARTIST/
+        expect(ffmpeg.read_tags).not_to match /Sample Artist/
       end
 
       it 'reloads read_tags' do
         ffmpeg.read_tags
-        Commander.stub_chain(:new, :execute)
+        Commander.stub_chain(:new, :execute).
+          and_return(double('output', success?: true))
         ffmpeg.stub(:restore)
         ffmpeg.update_tags({})
         expect(ffmpeg.instance_variable_get('@stdout')).to be_nil
+      end
+
+      it 'raises error if could not update tags' do
+        expect do
+          failed = double('commander', :success? => false)
+          Commander.stub_chain(:new, :execute) { failed }
+          ffmpeg.update_tags({})
+        end.
+          to raise_error(FFmpegError, 'Error updating ' + filepath)
       end
     end
 
     context '#convert' do
       it 'converts from input format to specified output format & bitrate' do
-        input = %W{ffmpeg -i spec/support/sample.flac}
-        options = %W{-ab 64k}
-        output = %W{spec/support/sample.mp3}
-        Commander.should_receive(:new).with(*(input + options + output)).
-          and_return(commander)
-        commander.should_receive(:execute)
         ffmpeg.convert(:mp3, 64)
+        mp3 = FFmpeg.new(File.realpath('spec/support/sample.mp3'))
+        expect(mp3.read_tags).to match /format_name=mp3/
       end
     end
   end
