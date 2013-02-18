@@ -30,8 +30,20 @@ module PopCap
         command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
         Commander.should_receive(:new).with(*command) { commander }
         commander.stub_chain(:execute, :stdout) { output }
+        output.stub(:valid_encoding?) { true }
+        ffmpeg.read_tags
+      end
+
+      it 'encodes invalid byte strings' do
+        output = double('output')
+        command = %W{ffprobe} + %W{-show_format} + %W{#{filepath}}
+        Commander.should_receive(:new).with(*command) { commander }
+        commander.stub_chain(:execute, :stdout) { output }
+        output.stub(:valid_encoding?) { false }
+        output.stub_chain(:encoding, :name) { 'UTF-8' }
         output.should_receive(:encode!).
-          with('UTF-8', 'UTF-8', invalid: :replace)
+          with('UTF-16', 'UTF-8', undef: :replace, invalid: :replace)
+        output.should_receive(:encode!).with('UTF-8')
         ffmpeg.read_tags
       end
     end
