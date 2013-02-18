@@ -45,19 +45,19 @@ module PopCap
       expect(command.stderr).to eq('bar')
     end
 
-    context '#status' do
+    context '#success' do
       it 'is true if it succeeds' do
         succeeded = double('status', success?: true)
         Open3.should_receive(:capture3).with('blah') { [nil,nil,succeeded] }
         command = Commander.new('blah').execute
-        expect(command.status.success?).to be_true
+        expect(command.success?).to be_true
       end
 
       it 'is false if it fails' do
         failed = double('status', success?: false)
         Open3.should_receive(:capture3).with('blah') { [nil,nil,failed] }
         command = Commander.new('blah').execute
-        expect(command.status.success?).to be_false
+        expect(command.success?).to be_false
       end
     end
   end

@@ -49,11 +49,11 @@ module PopCap
     #
     # Examples
     #
-    #   self.status.success?
+    #   self.success?
     #   # => true
     #
-    def status
-      @executed[2]
+    def success?
+      @executed[2].success?
     end
 
     private
