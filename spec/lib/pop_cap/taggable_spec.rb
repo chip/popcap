@@ -51,20 +51,11 @@ module PopCap
     end
 
     context '#reload!' do
-      it 'reloads #to_hash' do
-        sc.to_hash
-        sc.reload!(nil)
-        expect(sc.instance_variable_get('@to_hash')).to be_nil
-      end
-
-      it 'reloads #tags' do
-        sc.tags
-        sc.reload!(nil)
-        expect(sc.instance_variable_get('@tags')).to be_nil
-      end
-
-      it 'does nothing if #raw_tags is not nil' do
-        expect(sc.reload!('foo')).to be_false
+      it 'sets instance variables to nil' do
+        %w(@lined @hash @tags).each do |instance|
+          sc.reload!
+          expect(sc.instance_variable_get(instance)).to be_nil
+        end
       end
     end
   end

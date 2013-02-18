@@ -59,6 +59,14 @@ module PopCap
         ffmpeg.should_receive(:restore).with('/tmp')
         ffmpeg.update_tags(new_tags)
       end
+
+      it 'reloads read_tags' do
+        ffmpeg.read_tags
+        Commander.stub_chain(:new, :execute)
+        ffmpeg.stub(:restore)
+        ffmpeg.update_tags({})
+        expect(ffmpeg.instance_variable_get('@stdout')).to be_nil
+      end
     end
 
     context '#convert' do

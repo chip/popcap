@@ -8,6 +8,9 @@ module PopCap
     let(:filepath) { 'spec/support/sample.flac' }
     let(:included_modules) { AudioFile.included_modules }
 
+    before { PopCapSpecHelper.setup }
+    after { PopCapSpecHelper.teardown }
+
     subject { audio_file }
 
     context '#filepath' do
@@ -39,7 +42,7 @@ module PopCap
     context '#raw_tags' do
       it 'is memoized' do
         audio_file.raw_tags
-        expect(audio_file.instance_variable_get('@raw_tags')).
+        expect(audio_file.instance_variable_get('@raw')).
           to eq PopCapSpecHelper.raw_tags
       end
     end
@@ -48,7 +51,7 @@ module PopCap
       it 'reloads raw tags' do
         audio_file.raw_tags
         audio_file.reload!
-        expect(audio_file.instance_variable_get('@raw_tags')).to be_nil
+        expect(audio_file.instance_variable_get('@raw')).to be_nil
       end
 
       it 'calls up to Taggable#reload!' do
@@ -56,6 +59,13 @@ module PopCap
         audio_file.reload!
         expect(audio_file.instance_variable_get('@tags')).to be_nil
         expect(audio_file.instance_variable_get('@to_hash')).to be_nil
+      end
+    end
+
+    context '#update_tags' do
+      it 'reloads after tags updated' do
+        audio_file.should_receive(:reload!)
+        expect(audio_file.update_tags({foo: 'foo'}))
       end
     end
   end

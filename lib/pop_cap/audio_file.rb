@@ -70,7 +70,7 @@ module PopCap
     #    [/FORMAT]
     #
     def raw_tags
-      @raw_tags ||= @tag_util.new(@filepath).read_tags
+      @raw ||= @tag_util.new(@filepath).read_tags
     end
 
     # Public: This method reloads the current instance.
@@ -79,8 +79,8 @@ module PopCap
     #   audio_file.reload!
     #
     def reload!
-      @raw_tags = nil
-      super @raw_tags
+      @raw = nil
+      super
     end
 
     # Public: update_tags(updates)
@@ -94,6 +94,7 @@ module PopCap
     #
     def update_tags(updates)
       @tag_util.new(@filepath).update_tags(updates)
+      self.reload!
     end
   end
 end

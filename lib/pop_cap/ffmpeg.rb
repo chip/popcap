@@ -75,6 +75,7 @@ module PopCap
       @updates = updates
       Commander.new(*write_command).execute
       self.restore('/tmp')
+      @stdout = nil
     end
 
     private
@@ -87,11 +88,12 @@ module PopCap
     end
 
     def encode(string)
-      return string if string.valid_encoding?
-      original_encoding = string.encoding.name
-      string.encode!('UTF-16', original_encoding, undef: 
+      @string = string
+      return @string if @string.valid_encoding?
+      original_encoding = @string.encoding.name
+      @string.encode!('UTF-16', original_encoding, undef:
                      :replace, invalid: :replace)
-      string.encode!('UTF-8')
+      @string.encode!('UTF-8')
     end
 
     def read_command

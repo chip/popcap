@@ -11,9 +11,8 @@ module PopCap
     include Formatters
 
     # Internal: This method reloads memoized tags.
-    def reload!(raw_tags_instance)
-      return unless raw_tags_instance.nil?
-      @to_hash, @tags = nil, nil
+    def reload!
+      @lined, @tags, @hash = nil, nil, nil
     end
 
     # Internal: This method builds a sanitized hash from #raw_tags.
