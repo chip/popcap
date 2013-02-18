@@ -31,7 +31,7 @@ module PopCap
         Commander.should_receive(:new).with(*command) { commander }
         commander.stub_chain(:execute, :stdout) { output }
         output.should_receive(:encode!).
-          with('UTF-8', 'UTF-8', invalid: :replace)
+          with('LATIN-1', 'LATIN-1', invalid: :replace)
         ffmpeg.read_tags
       end
     end

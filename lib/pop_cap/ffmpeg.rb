@@ -87,7 +87,7 @@ module PopCap
     end
 
     def encode(string)
-      string.encode!('UTF-8', 'UTF-8', invalid: :replace)
+      string.encode!('LATIN-1', 'LATIN-1', invalid: :replace)
     end
 
     def read_command
