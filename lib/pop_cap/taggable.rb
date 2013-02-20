@@ -89,7 +89,7 @@ module PopCap
     end
 
     def formatted_hash
-      included_formatters.inject({}) do |formatted, formatter|
+      ::INCLUDED_FORMATTERS.inject({}) do |formatted, formatter|
         key, value = formatter
         helper = Helper.new(value)
         klass = helper.constantize

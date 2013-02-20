@@ -21,21 +21,13 @@ module PopCap
     #     end
     #   end
     #
+    ::INCLUDED_FORMATTERS= {}
 
-    def included_formatters
-      Dir["#{File.dirname(__FILE__)}/formatters/*.rb"].inject({}) do |hash,path|
-        @path = path
-        file_name, required = required_files
-        hash[file_name.to_sym] = required; hash
-      end
-    end
-
-    private
-    def required_files
-      file_name = File.basename(@path , '.rb')
-      required = 'pop_cap/formatters/' + file_name
-      require required
-      [file_name, required]
+    Dir["#{File.dirname(__FILE__)}/formatters/*.rb"].each do |path|
+      @file_name = File.basename(path , '.rb')
+      @required = 'pop_cap/formatters/' + @file_name
+      require @required
+      ::INCLUDED_FORMATTERS[@file_name.to_sym] = @required
     end
   end
 end
