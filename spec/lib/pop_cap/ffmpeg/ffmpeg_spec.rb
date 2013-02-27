@@ -28,38 +28,15 @@ module PopCap
     end
 
     context '#read_tags' do
-      let(:output) { double('output') }
-
-      it 'sends a read command to Commander' do
+      it 'reads tags using Ffprobe' do
         expect(ffmpeg.read_tags).to eq PopCapSpecHelper.raw_tags
-      end
-
-      it 'encodes invalid byte strings as UTF-8' do
-        Commander.stub_chain(:new, :execute) { output }
-        output.should_receive(:success?) { true }
-        output.should_receive(:stdout) { output }
-        output.stub(:valid_encoding?) { false }
-        output.stub_chain(:encoding, :name) { 'UTF-8' }
-        output.should_receive(:encode!).
-          with('UTF-16', 'UTF-8', undef: :replace, invalid: :replace)
-        output.should_receive(:encode!).with('UTF-8')
-        ffmpeg.read_tags
-      end
-
-      it 'raises error if could not read tags' do
-        expect do
-          failed = double('commander', :success? => false)
-          Commander.stub_chain(:new, :execute) { failed }
-          ffmpeg.read_tags
-        end.
-          to raise_error(FFmpegError, 'Error reading ' + filepath)
       end
     end
 
     context '#update_tags' do
       let(:new_tags) { {artist: 'UPDATEDARTIST'} }
 
-      it 'updates tags' do
+      it 'updates tags using FFmpeg' do
         expect(ffmpeg.read_tags).to match /Sample Artist/
         ffmpeg.update_tags(new_tags)
         updated = FFmpeg.new(filepath).read_tags

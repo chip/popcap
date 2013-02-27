@@ -1,6 +1,7 @@
 require 'pop_cap/commander'
 require 'pop_cap/converter'
 require 'pop_cap/fileable'
+require 'pop_cap/ffmpeg/tag_reader'
 require 'pop_cap/ffmpeg/tag_writer'
 
 module PopCap
@@ -61,8 +62,8 @@ module PopCap
     #    TAG:ARTIST=Sample Artist
     #    [/FORMAT]
     #
-    def read_tags
-      @stdout ||= encode(read_output)
+    def read_tags(reader=TagReader)
+      reader.read(filepath)
     end
 
     # Public: update_tags(updates)
@@ -85,34 +86,5 @@ module PopCap
         raise MissingDependency, 'FFmpeg is not installed.'
       end
     end
-
-    def encode(string)
-      return string if string.valid_encoding?
-      remove_invalid_bytes(string)
-    end
-
-    def remove_invalid_bytes(string)
-      @string = string
-      original_encoding = @string.encoding.name
-      @string.encode!('UTF-16', original_encoding, undef:
-                     :replace, invalid: :replace)
-      @string.encode!('UTF-8')
-    end
-
-    def read_command
-      %W{ffprobe -show_format} + %W{#{filepath}}
-    end
-
-    def read_output
-      executed = @commander.new(*read_command).execute
-      raise(FFmpegError, read_error_message) unless executed.success?
-      executed.stdout
-    end
-
-    def read_error_message
-      "Error reading #{self.filepath}"
-    end
   end
 end
-
-FFmpegError = Class.new(StandardError)

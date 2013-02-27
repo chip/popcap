@@ -9,7 +9,7 @@ module PopCap
     let(:tags) { {artist: 'UPDATE'} }
     let(:writer) { TagWriter.new(file, tags, commander) }
 
-    let(:command) do 
+    let(:command) do
       %W{ffmpeg -i #{file} -metadata artist=UPDATE /tmp/file.flac}
     end
 
