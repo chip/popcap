@@ -1,16 +1,14 @@
+require 'pop_cap/tag_formatter'
+
 module PopCap
   # Public: This class formats a filesize as human readable,
   # following a UNIX formatting standard.
   #
   # filesize - Provide a filesize as string, integer, or float.
   #
-  class Filesize
+  class Filesize < TagFormatter
     ::BASE = 1024
     ::UNITS = %W{B K M G T}
-
-    def initialize(filesize)
-      @filesize = filesize
-    end
 
     # Public: This method will format the filesize.
     # It raises a warning message if size is greater than 999 terabytes.
@@ -21,13 +19,9 @@ module PopCap
     #   # => '11.8M'
     #
     def format
-      return if @filesize.to_i == 0
+      return if value.to_i == 0
       return warning_message if too_large?
       converted_filesize.to_s + measurement_character
-    end
-
-    def self.format(filesize)
-      new(filesize).format
     end
 
     private
@@ -45,7 +39,7 @@ module PopCap
     end
 
     def float
-      Float(@filesize)
+      Float(value)
     end
 
     def is_zero_decimal?
@@ -61,7 +55,7 @@ module PopCap
     end
 
     def too_large?
-      @filesize.to_i > 1099400000000000
+      value.to_i > 1099400000000000
     end
 
     def warning_message

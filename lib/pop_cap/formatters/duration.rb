@@ -1,12 +1,10 @@
+require 'pop_cap/tag_formatter'
+
 module PopCap
   # Public: This will format a duration tag as strftime.
   #
   # time - Provide a string, float, or integer.
-  class Duration
-    def initialize(time)
-      @time = time
-    end
-
+  class Duration < TagFormatter
     # Public: This will format a duration tag as strftime.
     # It will raise a warning if the time is greater than 24 hours.
     # Leading zeroes & colons are removed.
@@ -17,18 +15,14 @@ module PopCap
     #   # => '7:00'
     #
     def format
-      return unless @time.to_i > 0
+      return unless value.to_i > 0
       return warning_message if over_twenty_four_hours?
       remove_leading_zeroes(to_strftime)
     end
 
-    def self.format(time)
-      new(time).format
-    end
-
     private
     def to_strftime
-      @strftime = Time.at(@time.to_f).gmtime.strftime('%H:%M:%S')
+      @strftime = Time.at(value.to_f).gmtime.strftime('%H:%M:%S')
     end
 
     def remove_leading_zeroes(strftime)
@@ -36,7 +30,7 @@ module PopCap
     end
 
     def over_twenty_four_hours?
-      @time.to_i > 86399
+      value.to_i > 86399
     end
 
     def warning_message
