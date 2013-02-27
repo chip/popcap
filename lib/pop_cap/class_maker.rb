@@ -1,14 +1,14 @@
 module PopCap
-  # Public: This class adds helper methods to construct a class.
+  # Public: This class adds methods to construct a class.
   #
   # name - This is the name of the class.
   #
   # Examples
-  #   Helper.new('array')
-  #   Helper.new('active_support')
-  #   Helper.new('active_record/base')
+  #   ClassMaker.new('array')
+  #   ClassMaker.new('active_support')
+  #   ClassMaker.new('active_record/base')
   #
-  class Helper
+  class ClassMaker
     def initialize(name)
       @name = name.to_s
     end
@@ -16,8 +16,8 @@ module PopCap
     # Public: This method camel cases a string or symbol.
     #
     # Examples
-    #   helper = Helper.new('active_support')
-    #   helper.camelize
+    #   maker = ClassMaker.new('active_support')
+    #   maker.camelize
     #   # => 'ActiveSupport'
     #
     def camelize
@@ -28,8 +28,8 @@ module PopCap
     # to a namespaced constant.
     #
     # Examples
-    #   helper = Helper.new('active_record/base')
-    #   helper.namespace
+    #   maker = ClassMaker.new('active_record/base')
+    #   maker.namespace
     #   # => 'ActiveRecord::Base'
     #
     def namespace
@@ -42,8 +42,8 @@ module PopCap
     # Public: This converts a string into a constant.
     #
     # Examples
-    #   helper = Helper.new('active_record/base')
-    #   helper.constantize
+    #   maker = ClassMaker.new('active_record/base')
+    #   maker.constantize
     #   # => ActiveSupport::Base
     #
     def constantize

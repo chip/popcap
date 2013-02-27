@@ -91,8 +91,7 @@ module PopCap
     def formatted_hash
       ::INCLUDED_FORMATTERS.inject({}) do |formatted, formatter|
         key, value = formatter
-        helper = Helper.new(value)
-        klass = helper.constantize
+        klass = ClassMaker.new(value).constantize
         formatted.merge({key => klass.new(lined_hash[key]).format})
       end
     end
