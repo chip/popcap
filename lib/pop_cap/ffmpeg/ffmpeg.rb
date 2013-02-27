@@ -1,6 +1,7 @@
 require 'pop_cap/commander'
 require 'pop_cap/converter'
 require 'pop_cap/fileable'
+require 'pop_cap/ffmpeg/tag_writer'
 
 module PopCap
   MissingDependency = Class.new(Errno::ENOENT)
@@ -21,9 +22,10 @@ module PopCap
     #
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
-    def initialize(filepath)
+    def initialize(filepath, commander=Commander)
       check_for_ffmpeg_install
       @filepath = filepath
+      @commander = commander
     end
 
     # Internal: convert
@@ -34,7 +36,7 @@ module PopCap
     #
     def convert(format, bitrate=192)
       conversion = super(format,bitrate)
-      Commander.new(*conversion).execute
+      @commander.new(*conversion).execute
     end
 
     # Internal: read_tags
@@ -63,7 +65,7 @@ module PopCap
       @stdout ||= encode(read_output)
     end
 
-    # Internal: update_tags(updates)
+    # Public: update_tags(updates)
     # This wraps FFmpeg's -metadata command.
     #
     # Examples
@@ -71,13 +73,8 @@ module PopCap
     #   ffmpeg = FFmpeg.new(filepath)
     #   ffmpeg.update_tags({artist: 'New Artist'})
     #
-    def update_tags(updates)
-      @updates = updates
-      unless Commander.new(*write_command).execute.success?
-        raise(FFmpegError, write_error_message)
-      end
-      self.restore('/tmp')
-      @stdout = nil
+    def update_tags(updates, writer=TagWriter)
+      writer.write(filepath, updates)
     end
 
     private
@@ -91,10 +88,15 @@ module PopCap
 
     def encode(string)
       return string if string.valid_encoding?
-      original_encoding = string.encoding.name
-      string.encode!('UTF-16', original_encoding, undef:
+      remove_invalid_bytes(string)
+    end
+
+    def remove_invalid_bytes(string)
+      @string = string
+      original_encoding = @string.encoding.name
+      @string.encode!('UTF-16', original_encoding, undef:
                      :replace, invalid: :replace)
-      string.encode!('UTF-8')
+      @string.encode!('UTF-8')
     end
 
     def read_command
@@ -102,27 +104,13 @@ module PopCap
     end
 
     def read_output
-      commander = Commander.new(*read_command).execute
-      raise(FFmpegError, read_error_message) unless commander.success?
-      commander.stdout
+      executed = @commander.new(*read_command).execute
+      raise(FFmpegError, read_error_message) unless executed.success?
+      executed.stdout
     end
 
     def read_error_message
       "Error reading #{self.filepath}"
-    end
-
-    def write_command
-      %W{ffmpeg -i #{filepath}} + write_options + %W{#{self.tmppath}}
-    end
-
-    def write_options
-      @updates.inject(%W{}) do |options,update|
-        options << '-metadata' << update.join('=')
-      end
-    end
-
-    def write_error_message
-      "Error updating #{self.filepath}"
     end
   end
 end

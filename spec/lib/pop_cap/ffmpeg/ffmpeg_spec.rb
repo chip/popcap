@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'support/popcap_spec_helper'
-require 'pop_cap/ffmpeg'
+require 'pop_cap/ffmpeg/ffmpeg'
 
 module PopCap
   describe FFmpeg do
@@ -59,29 +59,12 @@ module PopCap
     context '#update_tags' do
       let(:new_tags) { {artist: 'UPDATEDARTIST'} }
 
-      it 'updates tags on a temp file & copies temp file to original' do
+      it 'updates tags' do
         expect(ffmpeg.read_tags).to match /Sample Artist/
         ffmpeg.update_tags(new_tags)
-        expect(ffmpeg.read_tags).to match /UPDATEDARTIST/
-        expect(ffmpeg.read_tags).not_to match /Sample Artist/
-      end
-
-      it 'reloads read_tags' do
-        ffmpeg.read_tags
-        Commander.stub_chain(:new, :execute).
-          and_return(double('output', success?: true))
-        ffmpeg.stub(:restore)
-        ffmpeg.update_tags({})
-        expect(ffmpeg.instance_variable_get('@stdout')).to be_nil
-      end
-
-      it 'raises error if could not update tags' do
-        expect do
-          failed = double('commander', :success? => false)
-          Commander.stub_chain(:new, :execute) { failed }
-          ffmpeg.update_tags({})
-        end.
-          to raise_error(FFmpegError, 'Error updating ' + filepath)
+        updated = FFmpeg.new(filepath).read_tags
+        expect(updated).to match /UPDATEDARTIST/
+        expect(updated).not_to match /Sample Artist/
       end
     end
 
