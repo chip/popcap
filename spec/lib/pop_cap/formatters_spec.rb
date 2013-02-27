@@ -25,9 +25,9 @@ module PopCap
         end
       end
 
-      it 'has the formatter path as the value' do
+      it 'has the module name as the value' do
         formatter_files.each do |file|
-          value = file.sub(%r(^lib\/),'').sub(%r(\.rb$),'')
+          value = 'pop_cap/' + File.basename(file, '.rb')
           expect(::INCLUDED_FORMATTERS.values).to include(value)
         end
       end

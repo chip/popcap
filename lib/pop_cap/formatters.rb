@@ -25,9 +25,8 @@ module PopCap
 
     Dir["#{File.dirname(__FILE__)}/formatters/*.rb"].each do |path|
       require File.realpath(path)
-      @filename = File.basename(path , '.rb')
-      @class_name = 'pop_cap/formatters/' + @filename
-      ::INCLUDED_FORMATTERS[@filename.to_sym] = @class_name
+      @file = File.basename(path , '.rb')
+      ::INCLUDED_FORMATTERS[@file.to_sym] = 'pop_cap/' + @file
     end
   end
 end

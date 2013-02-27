@@ -1,4 +1,4 @@
-require 'pop_cap/helper'
+require 'pop_cap/class_maker'
 require 'pop_cap/formatters'
 require 'pop_cap/tag_line'
 require 'pop_cap/tag_struct'
@@ -90,10 +90,14 @@ module PopCap
 
     def formatted_hash
       ::INCLUDED_FORMATTERS.inject({}) do |formatted, formatter|
-        key, value = formatter
-        klass = ClassMaker.new(value).constantize
-        formatted.merge({key => klass.new(lined_hash[key]).format})
+        key, name = formatter
+        klass = ClassMaker.new(name).constantize
+        formatted.merge({key => formatter_class(key,klass)})
       end
+    end
+
+    def formatter_class(key, klass)
+      format = klass.new(lined_hash[key]).format
     end
   end
 end
