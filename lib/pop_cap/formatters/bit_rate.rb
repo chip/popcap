@@ -18,8 +18,8 @@ module PopCap
     #   # => '128 kb/s'
     #
     def format
-      return unless value.to_i > 0
-      value.to_s[0..-4] + ' kb/s'
+      return unless @value.to_i > 0
+      @value.to_s[0..-4] + ' kb/s'
     end
   end
 end

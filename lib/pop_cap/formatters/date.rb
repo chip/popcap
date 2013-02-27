@@ -19,7 +19,7 @@ module PopCap
     #
     def format
       return unless ( date_match && within_date_range? )
-      date_match[0].to_i
+      @match[0].to_i
     end
 
     def start_date
@@ -36,7 +36,7 @@ module PopCap
     end
 
     def within_date_range?
-      (start_date..end_date).include?(date_match[0].to_i)
+      (start_date..end_date).include?(@match[0].to_i)
     end
   end
 end
