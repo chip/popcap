@@ -3,6 +3,14 @@ require 'spec_helper'
 
 module PopCap
   describe Date do
+    describe '.format' do
+      it 'wraps #format in a class method' do
+        klass = Date.format('1975')
+        instance = Date.new('1975').format
+        expect(klass).to eq(instance)
+      end
+    end
+
     it 'handles dates like "October 5, 1975"' do
       dm = Date.new('October 5, 1975')
       expect(dm.format).to eq 1975

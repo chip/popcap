@@ -22,6 +22,10 @@ module PopCap
       remove_leading_zeroes(to_strftime)
     end
 
+    def self.format(time)
+      new(time).format
+    end
+
     private
     def to_strftime
       @strftime = Time.at(@time.to_f).gmtime.strftime('%H:%M:%S')

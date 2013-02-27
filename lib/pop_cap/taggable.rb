@@ -97,7 +97,7 @@ module PopCap
     end
 
     def formatter_class(key, klass)
-      format = klass.new(lined_hash[key]).format
+      klass.format(lined_hash[key])
     end
   end
 end

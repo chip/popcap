@@ -3,6 +3,14 @@ require 'spec_helper'
 
 module PopCap
   describe BitRate do
+    describe '.format' do
+      it 'wraps #format in a class method' do
+        klass = BitRate.format(128456)
+        instance = BitRate.new(128456).format
+        expect(klass).to eq(instance)
+      end
+    end
+
     it 'makes bitrate human readable' do
       br = BitRate.new(128456)
       expect(br.format).to eq('128 kb/s')

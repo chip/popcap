@@ -3,6 +3,14 @@ require 'pop_cap/formatters/filesize'
 
 module PopCap
   describe Filesize do
+    describe '.format' do
+      it 'wraps #format in a class method' do
+        klass = Filesize.format('1975')
+        instance = Filesize.new('1975').format
+        expect(klass).to eq(instance)
+      end
+    end
+
     it 'uses binary conversion' do
       fs = Filesize.new('1024')
       expect(fs.format).to eq '1K'

@@ -26,6 +26,10 @@ module PopCap
       converted_filesize.to_s + measurement_character
     end
 
+    def self.format(filesize)
+      new(filesize).format
+    end
+
     private
     def binary_filesize
       float / ::BASE ** exponent

@@ -3,6 +3,14 @@ require 'spec_helper'
 
 module PopCap
   describe Duration do
+    describe '.format' do
+      it 'wraps #format in a class method' do
+        klass = Duration.format('128456')
+        instance = Duration.new('128456').format
+        expect(klass).to eq(instance)
+      end
+    end
+
     it 'formats duration as HH:MM:SS' do
       dur = Duration.new('40003')
       expect(dur.format).to eq('11:06:43')

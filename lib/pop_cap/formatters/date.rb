@@ -28,6 +28,10 @@ module PopCap
       @match[0].to_i
     end
 
+    def self.format(date, options={})
+      new(date, options).format
+    end
+
     private
     def date_match
       @match ||= @date.match(/\b\d{4}\b/)

@@ -23,5 +23,9 @@ module PopCap
       return unless @bitrate.to_i > 0
       @bitrate.to_s[0..-4] + ' kb/s'
     end
+
+    def self.format(bit_rate)
+      new(bit_rate).format
+    end
   end
 end
