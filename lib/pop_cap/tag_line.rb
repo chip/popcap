@@ -1,5 +1,4 @@
 require 'pop_cap/tag_key'
-require 'pop_cap/formatters'
 
 module PopCap
   # Internal: This class sanitizes the raw output of FFmpeg to
