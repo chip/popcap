@@ -1,4 +1,4 @@
-require 'pop_cap/commander'
+require 'pop_cap/ffmpeg/commander'
 
 module PopCap
   FFmpegError = Class.new(StandardError)

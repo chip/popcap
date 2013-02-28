@@ -1,4 +1,4 @@
-require 'pop_cap/commander'
+require 'pop_cap/ffmpeg/commander'
 require 'fileutils'
 
 module PopCap

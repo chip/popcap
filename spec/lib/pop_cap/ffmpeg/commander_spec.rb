@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/commander'
+require 'pop_cap/ffmpeg/commander'
 
 module PopCap
   describe Commander do
