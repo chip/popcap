@@ -1,4 +1,5 @@
 require 'pop_cap/ffmpeg/ffmpeg'
+require 'pop_cap/fileable'
 require 'pop_cap/taggable'
 
 module PopCap

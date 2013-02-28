@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/converter'
+require 'pop_cap/ffmpeg/converter'
 
 module PopCap
   describe Converter do

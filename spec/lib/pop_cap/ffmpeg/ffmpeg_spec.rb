@@ -23,10 +23,6 @@ module PopCap
       end.to raise_error(MissingDependency, error_message)
     end
 
-    it 'includes Fileable' do
-      expect(FFmpeg.included_modules).to include Fileable
-    end
-
     context '#read_tags' do
       it 'reads tags using Ffprobe' do
         expect(ffmpeg.read_tags).to eq PopCapSpecHelper.raw_tags

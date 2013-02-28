@@ -1,6 +1,4 @@
-require 'pop_cap/commander'
-require 'pop_cap/converter'
-require 'pop_cap/fileable'
+require 'pop_cap/ffmpeg/converter'
 require 'pop_cap/ffmpeg/tag_reader'
 require 'pop_cap/ffmpeg/tag_writer'
 
@@ -14,8 +12,6 @@ module PopCap
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg
-    include Fileable
-
     attr_accessor :filepath
 
     # Internal: initialize
