@@ -1,7 +1,4 @@
 require 'reek/spec'
-require 'simplecov'
-
-SimpleCov.start
 
 RSpec.configure do
   include Reek::Spec
