@@ -16,7 +16,7 @@ module PopCap
     #
     def initialize(*args)
       raise(ArgumentError, error_message) if args.empty?
-      @command = args.inject(%W{}) { |command, arg| command << arg }
+      @command = shell_escaped(*args)
       @executed = []
     end
 
@@ -57,6 +57,10 @@ module PopCap
     end
 
     private
+    def shell_escaped(*args)
+      args.inject(%W{}) { |command, arg| command << arg }
+    end
+
     def error_message
       'Cannot run command with no args.'
     end
