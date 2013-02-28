@@ -11,6 +11,8 @@ module PopCap
   #   ts.date => 1984
   #
   class TagStruct
+    include Enumerable
+
     def initialize(hash)
       raise(ArgumentError, argument_error_message) unless hash.kind_of?(Hash)
       @hash = hash

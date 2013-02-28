@@ -6,6 +6,10 @@ module PopCap
     let(:hash) { {artist: 'Artist', date: 1984} }
     let(:ts) { TagStruct.new(hash) }
 
+    it 'includes Enumerable' do
+      expect(TagStruct.included_modules).to include(Enumerable)
+    end
+
     describe '#new' do
       it 'raises error if not a hash' do
         expect do
