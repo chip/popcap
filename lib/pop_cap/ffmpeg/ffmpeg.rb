@@ -14,7 +14,6 @@ module PopCap
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg
-    include Converter
     include Fileable
 
     attr_accessor :filepath
@@ -23,21 +22,20 @@ module PopCap
     #
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
-    def initialize(filepath, commander=Commander)
+    def initialize(filepath)
       check_for_ffmpeg_install
       @filepath = filepath
-      @commander = commander
     end
 
-    # Internal: convert
-    # This command calls up to Converter@convert.
+    # Public: This comverts a file to the specified output format
+    # & optional bitrate.
     #
     # format - A valid audio file format as string or symbol.
     # bitrate = A valid bit rate as string or symbol.
+    # converter = Optional.  The converter library to use.
     #
-    def convert(format, bitrate=192)
-      conversion = super(format,bitrate)
-      @commander.new(*conversion).execute
+    def convert(format, bitrate=192, converter=Converter)
+      converter.convert(filepath, {format: format, bitrate: bitrate})
     end
 
     # Internal: read_tags

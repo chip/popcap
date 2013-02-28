@@ -3,32 +3,44 @@ require 'pop_cap/converter'
 
 module PopCap
   describe Converter do
-    class FakeClass
-      include Converter
-      def filepath
-        'path/to/file.flac'
+    let(:bitrate) { %W{-ab 192k}}
+    let(:command) { input + bitrate + output_path }
+    let(:commander) { double('commander') }
+    let(:filepath) { 'path/to/file.flac' }
+    let(:input) { %W{ffmpeg -i #{filepath}} }
+    let(:instance) { double('converter_instance') }
+
+    def shared_expectation(command=command)
+      commander.should_receive(:new).with(*command) { instance }
+      instance.stub_chain(:execute, :success?) { true }
+    end
+
+    describe '.convert' do
+      let(:output_path) { %W{path/to/file.ogg} }
+
+      it 'has a class method for #convert' do
+        shared_expectation
+        Converter.convert(filepath, {format: 'ogg', commander: commander})
       end
     end
 
-    let(:bitrate) { %W{-ab 192k}}
-    let(:filepath) { 'path/to/file.flac' }
-    let(:fk) { FakeClass.new }
-    let(:input) { %W{ffmpeg -i #{filepath}} }
-
-    context '#command' do
+    describe '#convert' do
       let(:output_path) { %W{path/to/file.ogg} }
 
-      it 'builds a command' do
-        expect(fk.convert('ogg')).to eq(input + bitrate + output_path)
-      end
-
       context 'format' do
-        it 'handles symbol' do
-          expect(fk.convert(:ogg)).to eq(input + bitrate + output_path)
+        it 'handles a string' do
+          shared_expectation
+          Converter.new(filepath, {format: 'ogg', commander: commander}).convert
+        end
+
+        it 'handles a symbol' do
+          shared_expectation
+          Converter.new(filepath, {format: :ogg, commander: commander}).convert
         end
 
         it 'is case insenstive' do
-          expect(fk.convert('OGG')).to eq(input + bitrate + output_path)
+          shared_expectation
+          Converter.new(filepath, {format: 'OGG', commander: commander}).convert
         end
       end
 
@@ -36,16 +48,22 @@ module PopCap
         let(:output_path) { %W{path/to/file.mp3} }
 
         it 'defaults to 192 kb/s' do
-          expect(fk.convert(:mp3)).to eq(input + %W{-ab 192k} + output_path)
+          shared_expectation
+          Converter.new(filepath, {format: :mp3, commander: commander}).convert
         end
 
         it 'takes an optional bitrate' do
-          expect(fk.convert(:mp3, 64)).to eq(input + %W{-ab 64k} + output_path)
+          options = {format: :mp3, bitrate: 64, commander: commander}
+          bitrate_command = input + %W{-ab 64k} + output_path
+          shared_expectation(bitrate_command)
+          Converter.new(filepath, options).convert
         end
 
         it 'handles bitrate as string' do
-          expect(fk.convert(:mp3, '128')).
-            to eq(input + %W{-ab 128k} + output_path)
+          options = {format: :mp3, bitrate: '128', commander: commander}
+          bitrate_command = input + %W{-ab 128k} + output_path
+          shared_expectation(bitrate_command)
+          Converter.new(filepath, options).convert
         end
       end
 
@@ -53,13 +71,20 @@ module PopCap
         let(:output_path) { %W{path/to/file.m4a} }
 
         it 'uses strict mode' do
-          expect(fk.convert(:m4a)).
-            to eq(input + %W{-strict -2} + bitrate + output_path)
+          strict = input + %W{-strict -2} + bitrate + output_path
+          shared_expectation(strict)
+          Converter.new(filepath, {format: :m4a, commander: commander}).convert
         end
+      end
 
-        it 'ignores strict mode if not m4a' do
-          expect(fk.convert(:ogg)).
-            to eq(input + bitrate + %W{path/to/file.ogg})
+      context 'errors' do
+        it 'raises error if could not convert file' do
+          expect do
+            commander.should_receive(:new).with(*command) { instance }
+            instance.stub_chain(:execute, :success?) { false }
+            Converter.new(filepath, {format: :ogg,
+                          commander: commander}).convert
+          end.to raise_error(FFmpegError, "Error converting #{filepath}.")
         end
       end
     end

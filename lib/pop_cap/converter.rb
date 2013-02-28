@@ -1,31 +1,61 @@
+require 'pop_cap/commander'
+
 module PopCap
-  # Internal: This module builds a command to convert an audio file
-  # to the specified output format. The module is included in FFmpeg.
+  FFmpegError = Class.new(StandardError)
+
+  # Public: This class converts an audio file to the specified
+  # output format.
   #
-  module Converter
-    # Internal: This method takes an input format & optional bitrate
-    # in order to supply the ffmpeg command used to convert.
+  class Converter
+    attr_reader :bitrate, :commander, :file, :format
+
+    # Public: This method takes a filepath, output format &
+    # optional bitrate.
     #
+    # file - The path to the file to convert.
     # format - Provide a valid format as a string or symbol.
     # bitrate - Provide a valid bitrate as a string or integer.
     #
-    def convert(format, bitrate=192)
-      @bitrate = bitrate
-      @format = format.downcase.to_s
-      input_path + strict_mode + bitrate_options + output_path
+    def initialize(file, options={})
+      @file = file
+      @format = options[:format].downcase.to_s
+      @bitrate = options[:bitrate] || 192
+      @commander = options[:commander] || Commander
+    end
+
+    # Public: This method will execute the conversion.
+    #
+    def convert
+      execute = commander.new(*conversion_command).execute
+      raise(FFmpegError, conversion_error) unless execute.success?
+    end
+
+    # Public: A convenience class method which wraps the instance
+    # constructor.
+    #
+    def self.convert(file, options={})
+      new(file, options).convert
     end
 
     private
+    def conversion_command
+      input_path + strict_mode + bitrate_options + output_path
+    end
+
+    def conversion_error
+      "Error converting #{file}."
+    end
+
     def bitrate_options
-      %W{-ab #{@bitrate}k}
+      %W{-ab #{bitrate}k}
     end
 
     def input_path
-      %W{ffmpeg -i #{self.filepath}}
+      %W{ffmpeg -i #{file}}
     end
 
     def output_path
-      %W{#{self.filepath.sub(%r([^.]+\z),@format)}}
+      %W{#{file.sub(%r([^.]+\z),format)}}
     end
 
     def strict_mode
@@ -34,7 +64,7 @@ module PopCap
     end
 
     def use_strict_mode?
-      @format == 'm4a'
+      format == 'm4a'
     end
   end
 end
