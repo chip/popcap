@@ -8,7 +8,6 @@ module PopCap
   # line - This is a single line of raw output from FFmpeg.
   #
   class TagLine
-    include
     def initialize(line)
       @line = line
     end
