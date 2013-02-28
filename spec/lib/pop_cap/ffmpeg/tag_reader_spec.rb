@@ -6,7 +6,7 @@ module PopCap
     let(:commander) { double('commander') }
     let(:instance) { double('commander_instance') }
     let(:file) { 'path/to/file.flac' }
-    let(:reader) { TagReader.new(file, commander) }
+    let(:reader) { TagReader.new(file, {commander: commander}) }
     let(:command) { %W{ffprobe -show_format #{file}} }
 
     let(:shared) do
@@ -19,7 +19,7 @@ module PopCap
       it 'has a class method for #read' do
         shared
         instance.stub(:valid_encoding?) { true }
-        TagReader.read(file, commander)
+        TagReader.read(file, {commander: commander})
       end
     end
 
@@ -47,7 +47,7 @@ module PopCap
           commander.should_receive(:new).with(*command) { instance }
           instance.stub_chain(:execute, :success?) { false }
           reader.read
-        end.to raise_error(FFmpegError, "Error reading #{file}")
+        end.to raise_error(FFmpegError, "Error reading #{file}.")
       end
     end
   end

@@ -1,4 +1,6 @@
-require 'pop_cap/ffmpeg/ffmpeg'
+require 'pop_cap/ffmpeg/converter'
+require 'pop_cap/ffmpeg/tag_reader'
+require 'pop_cap/ffmpeg/tag_writer'
 require 'pop_cap/fileable'
 require 'pop_cap/taggable'
 
@@ -24,10 +26,9 @@ module PopCap
     #
     # filepath - Requires a valid filepath to a file on the local filesystem.
     #
-    def initialize(filepath, tag_util=FFmpeg)
+    def initialize(filepath)
       raise(FileNotFound, filepath) unless File.exists?(filepath)
       @filepath = File.realpath(filepath)
-      @tag_util = tag_util
     end
 
     # Public: convert
@@ -43,7 +44,7 @@ module PopCap
     #   # => 'spec/support/sample.mp3'
     #
     def convert(format, bitrate=192)
-      @tag_util.new(@filepath).convert(format, bitrate)
+      Converter.convert(filepath, {format: format, bitrate: bitrate})
     end
 
     # Public: raw_tags
@@ -71,7 +72,7 @@ module PopCap
     #    [/FORMAT]
     #
     def raw_tags
-      @raw ||= @tag_util.new(@filepath).read_tags
+      @raw ||= TagReader.read(filepath)
     end
 
     # Public: This method reloads the current instance.
@@ -94,7 +95,7 @@ module PopCap
     #   audio_file.update_tags({artist: 'New Artist', album: 'New Album'})
     #
     def update_tags(updates)
-      @tag_util.new(@filepath).update_tags(updates)
+      TagWriter.write(filepath, updates)
       self.reload!
     end
   end

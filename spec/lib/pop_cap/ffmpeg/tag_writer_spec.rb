@@ -7,7 +7,8 @@ module PopCap
     let(:instance) { double('commander_instance') }
     let(:file) { 'path/to/file.flac' }
     let(:tags) { {artist: 'UPDATE'} }
-    let(:writer) { TagWriter.new(file, tags, commander) }
+    let(:options) { {artist: 'UPDATE', commander: commander} }
+    let(:writer) { TagWriter.new(file, options) }
 
     let(:command) do
       %W{ffmpeg -i #{file} -metadata artist=UPDATE /tmp/file.flac}
@@ -15,9 +16,9 @@ module PopCap
 
     describe '.write' do
       it 'has a class method for #write' do
-        TagWriter.should_receive(:new).with(file, tags, commander) { instance }
+        TagWriter.should_receive(:new).with(file, options) { instance }
         instance.should_receive(:write)
-        TagWriter.write(file, tags, commander)
+        TagWriter.write(file, options)
       end
     end
 
@@ -42,7 +43,7 @@ module PopCap
             commander.should_receive(:new).with(*command) { instance }
             instance.stub_chain(:execute, :success?) { false }
             writer.write
-          end.to raise_error(FFmpegError, "Error updating #{file}")
+          end.to raise_error(FFmpegError, "Error writing #{file}.")
         end
 
         it 'does not move temp file' do
@@ -51,7 +52,7 @@ module PopCap
             instance.stub_chain(:execute, :success?) { false }
             FileUtils.should_not_receive(:move).with('/tmp/file.flac', file)
             writer.write
-          end.to raise_error(FFmpegError, "Error updating #{file}")
+          end.to raise_error(FFmpegError, "Error writing #{file}.")
         end
       end
     end

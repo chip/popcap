@@ -1,75 +1,36 @@
-require 'pop_cap/ffmpeg/converter'
-require 'pop_cap/ffmpeg/tag_reader'
-require 'pop_cap/ffmpeg/tag_writer'
+require 'pop_cap/ffmpeg/commander'
 
 module PopCap
+  FFmpegError = Class.new(StandardError)
   MissingDependency = Class.new(Errno::ENOENT)
-  # Internal: This is a wrapper for the FFmpeg C library.
+
+  # Public: This is a wrapper for the FFmpeg C library.
   #
   # Examples
   #
-  #   filepath = 'spec/support/sample.flac'
+  #   file = 'spec/support/sample.flac'
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg
-    attr_accessor :filepath
+    attr_accessor :commander, :filepath, :options
 
-    # Internal: initialize
+    # Public: initialize
     #
     # filepath - Requires a valid filepath to a file on the local filesystem.
+    # commander - Defaults to Commander for executing system commands.
     #
-    def initialize(filepath)
+    def initialize(filepath, options={})
       check_for_ffmpeg_install
-      @filepath = filepath
+      @filepath, @options = filepath, options
+      @commander = options[:commander] || Commander
     end
 
-    # Public: This comverts a file to the specified output format
-    # & optional bitrate.
+    # Public: error_message
     #
-    # format - A valid audio file format as string or symbol.
-    # bitrate = A valid bit rate as string or symbol.
-    # converter = Optional.  The converter library to use.
+    # message - Provide the message to return.
     #
-    def convert(format, bitrate=192, converter=Converter)
-      converter.convert(filepath, {format: format, bitrate: bitrate})
-    end
-
-    # Internal: read_tags
-    # Returns the raw output of FFProbe's show_format option.
-    #
-    # Examples
-    #
-    #    [FORMAT]
-    #    filename=spec/support/sample.flac
-    #    nb_streams=1
-    #    format_name=flac
-    #    format_long_name=raw FLAC
-    #    start_time=N/A
-    #    duration=1.000000
-    #    size=18291
-    #    bit_rate=146328
-    #    TAG:GENRE=Sample Genre
-    #    TAG:track=01
-    #    TAG:ALBUM=Sample Album
-    #    TAG:DATE=2012
-    #    TAG:TITLE=Sample Title
-    #    TAG:ARTIST=Sample Artist
-    #    [/FORMAT]
-    #
-    def read_tags(reader=TagReader)
-      reader.read(filepath)
-    end
-
-    # Public: update_tags(updates)
-    # This wraps FFmpeg's -metadata command.
-    #
-    # Examples
-    #   filepath = 'spec/support/sample.flac'
-    #   ffmpeg = FFmpeg.new(filepath)
-    #   ffmpeg.update_tags({artist: 'New Artist'})
-    #
-    def update_tags(updates, writer=TagWriter)
-      writer.write(filepath, updates)
+    def error_message(message)
+      "Error #{message} #{filepath}."
     end
 
     private

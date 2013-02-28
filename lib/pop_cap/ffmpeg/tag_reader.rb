@@ -1,44 +1,31 @@
-require 'pop_cap/ffmpeg/commander'
+require 'pop_cap/ffmpeg/ffmpeg'
 
 module PopCap
-  FFmpegError = Class.new(StandardError)
-
   # Public: This class wraps FFprobe to read tags from a specified file.
   #
-  class TagReader
-    attr_reader :file
-
-    # Public: Construct the class by providing it with a file.
-    #
-    # file - A path to a file on the filesystem.
-    #
-    def initialize(file, commander=Commander)
-      @file = file
-      @commander = commander
-    end
-
+  class TagReader < FFmpeg
     # Public: This method returns the results of FFprobe -show_format.
     #
     def read
-      encode(read_output)
+      encode(output)
     end
 
     # Public: A convenience class method which wraps the instance
     # constructor.
     #
-    def self.read(file, commander=Commander)
-      new(file, commander).read
+    def self.read(filepath, options={})
+      new(filepath, options).read
     end
 
     private
 
-    def read_command
-      %W{ffprobe -show_format} + %W{#{file}}
+    def command
+      %W{ffprobe -show_format} + %W{#{filepath}}
     end
 
-    def read_output
-      executed = @commander.new(*read_command).execute
-      raise(FFmpegError, read_error_message) unless executed.success?
+    def output
+      executed = commander.new(*command).execute
+      raise(FFmpegError, error_message('reading')) unless executed.success?
       executed.stdout
     end
 
@@ -53,10 +40,6 @@ module PopCap
       @string.encode!('UTF-16', original_encoding, undef:
                       :replace, invalid: :replace)
       @string.encode!('UTF-8')
-    end
-
-    def read_error_message
-      "Error reading #{file}"
     end
   end
 end
