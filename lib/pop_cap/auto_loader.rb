@@ -10,7 +10,7 @@ module PopCap
     # directory - A path to a directory.
     #
     def initialize(directory)
-      @directory = with_trailing_slash(directory) || directory
+      @directory = File.join(directory, '')
     end
 
     # Public: This will return the autoloaded files & their paths
@@ -55,10 +55,6 @@ module PopCap
 
     def shortpath(file)
       directory + basename(file)
-    end
-
-    def with_trailing_slash(dir)
-      dir << '/' unless dir.end_with?('/')
     end
   end
 end
