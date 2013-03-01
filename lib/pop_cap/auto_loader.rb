@@ -19,8 +19,7 @@ module PopCap
     #
     def loaded_paths
       ruby_files.inject({}) do |pathnames, file|
-        pathnames[path_keyname(file)] = shortpath(file)
-        pathnames
+        pathnames.merge(loadpath_for(file))
       end
     end
 
@@ -45,7 +44,11 @@ module PopCap
       File.basename(file, '.rb')
     end
 
-    def path_keyname(file)
+    def loadpath_for(file)
+      { filename_to_symbol(file) => shortpath(file) }
+    end
+
+    def filename_to_symbol(file)
       basename(file).to_sym
     end
 
