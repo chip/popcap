@@ -50,22 +50,16 @@ module PopCap
     context '#reload!' do
       it 'reloads raw tags' do
         audio_file.raw_tags
+        expect(audio_file.instance_variable_get('@raw')).not_to be_nil
         audio_file.reload!
         expect(audio_file.instance_variable_get('@raw')).to be_nil
-      end
-
-      it 'calls up to Taggable#reload!' do
-        audio_file.raw_tags
-        audio_file.reload!
-        expect(audio_file.instance_variable_get('@tags')).to be_nil
-        expect(audio_file.instance_variable_get('@to_hash')).to be_nil
       end
     end
 
     context '#update_tags' do
       it 'reloads after tags updated' do
         audio_file.should_receive(:reload!)
-        expect(audio_file.update_tags({foo: 'foo'}))
+        audio_file.update_tags({foo: 'foo'})
       end
     end
   end
