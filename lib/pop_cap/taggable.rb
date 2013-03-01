@@ -1,5 +1,5 @@
 require 'pop_cap/class_maker'
-require 'pop_cap/formatters'
+require 'pop_cap/auto_loader'
 require 'pop_cap/tag_line'
 require 'pop_cap/tag_struct'
 
@@ -8,8 +8,6 @@ module PopCap
   # attribute.  It is used to parse and build tags from FFmpeg raw output.
   #
   module Taggable
-    include Formatters
-
     # Internal: This method reloads memoized tags.
     def reload!
       @lined, @tags, @hash = nil, nil, nil
@@ -39,7 +37,7 @@ module PopCap
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @hash ||= lined_hash.merge(formatted_hash)
+      @hash ||= lined_hash.merge(formatted_attributes)
     end
 
     # Public: This method builds an tag structure from #to_hash. Also,
@@ -88,16 +86,24 @@ module PopCap
         lines.inject({}) { |hsh,line| hsh.merge(TagLine.new(line)).to_hash }
     end
 
-    def formatted_hash
-      ::INCLUDED_FORMATTERS.inject({}) do |formatted, formatter|
-        key, name = formatter
-        klass = ClassMaker.new(name).constantize
-        formatted.merge({key => formatter_class(key,klass)})
+    def formatted_attributes
+      formatter_filepaths.inject({}) do |formatted, filepath|
+        name, path = filepath
+        klass = ClassMaker.new(cleaned_path(path)).constantize
+        formatted.merge({name => formatter_class(name,klass)})
       end
     end
 
     def formatter_class(key, klass)
       klass.format(lined_hash[key])
+    end
+
+    def cleaned_path(klass)
+      klass.sub(%r(^lib\/),'')
+    end
+
+    def formatter_filepaths
+      AutoLoader.require_all('lib/pop_cap/formatters').loaded_paths
     end
   end
 end
