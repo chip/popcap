@@ -10,13 +10,15 @@ module PopCap
   #   # => <directory contents>
   #
   class Commander
+    attr_reader :command
     # Public: Initialize
     #
     # args - Arguments should be escaped with an interpolated literal.
     #
     def initialize(*args)
       raise(ArgumentError, error_message) if args.empty?
-      @command = shell_escaped(*args)
+      @args = args
+      @command = shell_escaped_arguments
       @executed = []
     end
 
@@ -25,7 +27,7 @@ module PopCap
     # to chain methods.
     #
     def execute
-      @executed = Open3.capture3(*@command)
+      @executed = Open3.capture3(*command)
       self
     end
 
@@ -57,8 +59,8 @@ module PopCap
     end
 
     private
-    def shell_escaped(*args)
-      args.inject(%W{}) { |command, arg| command << arg }
+    def shell_escaped_arguments
+      @args.inject(%W{}) { |command, arg| command << arg }
     end
 
     def error_message
