@@ -18,16 +18,16 @@ module PopCap
       def format
         return unless value.to_i > 0
         return warning_message if over_twenty_four_hours?
-        remove_leading_zeroes(to_strftime)
+        human_readable_time
       end
 
       private
-      def to_strftime
-        @strftime = Time.at(value.to_f).gmtime.strftime('%H:%M:%S')
+      def human_readable_time
+        to_strftime.sub(/^(0+|:)+/,'')
       end
 
-      def remove_leading_zeroes(strftime)
-        @strftime.sub(/^(0+|:)+/,'')
+      def to_strftime
+        Time.at(value.to_f).gmtime.strftime('%H:%M:%S')
       end
 
       def over_twenty_four_hours?
