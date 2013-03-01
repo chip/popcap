@@ -1,4 +1,4 @@
-require 'pop_cap/tag_formatter'
+require 'pop_cap/formatter'
 
 module PopCap
   module Formatters
@@ -10,7 +10,7 @@ module PopCap
     #           The start_date defaults to 1800, end_date defaults
     #           to 2100.
     #
-    class Date < TagFormatter
+    class Date < Formatter
       # Public:  This method returns a year if it is matched.
       #
       # Examples

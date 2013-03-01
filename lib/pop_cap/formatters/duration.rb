@@ -1,11 +1,11 @@
-require 'pop_cap/tag_formatter'
+require 'pop_cap/formatter'
 
 module PopCap
   module Formatters
     # Public: This will format a duration tag as strftime.
     #
     # time - Provide a string, float, or integer.
-    class Duration < TagFormatter
+    class Duration < Formatter
       # Public: This will format a duration tag as strftime.
       # It will raise a warning if the time is greater than 24 hours.
       # Leading zeroes & colons are removed.

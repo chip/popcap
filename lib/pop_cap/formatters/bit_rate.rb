@@ -1,4 +1,4 @@
-require 'pop_cap/tag_formatter'
+require 'pop_cap/formatter'
 
 module PopCap
   module Formatters
@@ -7,7 +7,7 @@ module PopCap
     #
     # bitrate - The bitrate can be sent as a string or integer.
     #
-    class BitRate < TagFormatter
+    class BitRate < Formatter
       # Public: This method returns a bitrate represented in kilobytes.
       #
       # It returns nil for anything that is not a number greater than

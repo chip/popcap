@@ -1,4 +1,4 @@
-require 'pop_cap/tag_formatter'
+require 'pop_cap/formatter'
 
 module PopCap
   module Formatters
@@ -7,7 +7,7 @@ module PopCap
     #
     # filesize - Provide a filesize as string, integer, or float.
     #
-    class Filesize < TagFormatter
+    class Filesize < Formatter
       ::BASE = 1024
       ::UNITS = %W{B K M G T}
 

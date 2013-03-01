@@ -2,7 +2,7 @@ module PopCap
   # Public: This is a super class for all formatter classes.
   # It establishes the default behavior of formatter classes.
   #
-  class TagFormatter
+  class Formatter
     attr_reader :value, :options
 
     # Public: This class is constructed with a value & options hash.

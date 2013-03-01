@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'pop_cap/tag_formatter'
+require 'pop_cap/formatter'
 
 module PopCap
-  describe TagFormatter do
-    class Taggy < TagFormatter
+  describe Formatter do
+    class Taggy < Formatter
       def format; 'baz'; end
     end
 

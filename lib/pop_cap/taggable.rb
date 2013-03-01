@@ -86,6 +86,11 @@ module PopCap
         lines.inject({}) { |hsh,line| hsh.merge(TagLine.new(line)).to_hash }
     end
 
+    # formatters.inject({}) do |formatted, formatter| 
+    #   klass_for(formatter).format(attribute_for(formatter)
+    #   formatted.merge(formatted_attribute)
+    # end
+    
     def formatted_attributes
       formatter_filepaths.inject({}) do |formatted, filepath|
         name, path = filepath
@@ -102,8 +107,8 @@ module PopCap
       klass.sub(%r(^lib\/),'')
     end
 
-    def formatter_filepaths
-      AutoLoader.require_all('lib/pop_cap/formatters').loaded_paths
+    def formatter_filepaths(autoloader=AutoLoader)
+      autoloader.require_all('lib/pop_cap/formatters').loaded_paths
     end
   end
 end
