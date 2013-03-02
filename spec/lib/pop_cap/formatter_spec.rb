@@ -37,7 +37,7 @@ module PopCap
 
       describe '.subclasses_demodulized' do
         it 'returns of the subclasses with their names demodulized' do
-          expect(Formatter.subclasses_demodulized).to include(%w(TagClass))
+          expect(Formatter.subclasses_demodulized).to include('TagClass')
         end
       end
 
