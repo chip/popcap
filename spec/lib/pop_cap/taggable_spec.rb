@@ -19,13 +19,13 @@ module PopCap
 
     context '#to_hash' do
       it 'builds a sanitized hash from FFmpeg raw_tags' do
-        expect(sc.to_hash).to eq PopCapSpecHelper.to_hash
+        expect(sc.to_hash).to include(PopCapSpecHelper.to_hash)
       end
 
       it 'is memoized' do
         sc.to_hash
         expect(sc.instance_variable_get('@hash')).
-          to eq PopCapSpecHelper.to_hash
+          to include(PopCapSpecHelper.to_hash)
       end
     end
 
@@ -52,7 +52,7 @@ module PopCap
 
     context '#reload!' do
       it 'sets instance variables to nil' do
-        %w(@lined @hash @tags).each do |instance|
+        %w(@attributes @hash @tags).each do |instance|
           sc.reload!
           expect(sc.instance_variable_get(instance)).to be_nil
         end

@@ -1,5 +1,6 @@
 require 'pop_cap/class_support'
-require 'pop_cap/auto_loader'
+require 'pop_cap/formatter'
+require 'pop_cap/tag/formatted_tag'
 require 'pop_cap/tag/unformatted_tag'
 require 'pop_cap/tag/tag_struct'
 
@@ -10,7 +11,7 @@ module PopCap
   module Taggable
     # Internal: This method reloads memoized tags.
     def reload!
-      @unformattted, @tags, @hash = nil, nil, nil
+      @attributes, @tags, @hash = nil, nil, nil
     end
 
     # Internal: This method builds a sanitized hash from #raw_tags.
@@ -37,7 +38,7 @@ module PopCap
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @hash ||= unformatted_attributes.merge(formatted_attributes)
+      @hash ||= unformatted.merge(formatted)
     end
 
     # Public: This method builds an tag structure from #to_hash. Also,
@@ -81,29 +82,20 @@ module PopCap
       TagStruct.new(hash)
     end
 
-    def unformatted_attributes
-      @unformattted ||=
+    def unformatted
+      @attributes ||=
         lines.inject({}) { |hsh,line| hsh.merge(UnformattedTag.new(line)).to_hash }
     end
 
-    def formatted_attributes
-      formatter_filepaths.inject({}) do |formatted, filepath|
-        name, path = filepath
-        klass = ClassSupport.new(cleaned_path(path)).constantize
-        formatted.merge({name => formatter_class(name,klass)})
+    def formatted
+      Formatters::Formatter.subclasses.inject({}) do |formatted, formatter|
+        attribute = ClassSupport.new(formatter).symbolize
+        formatted.merge({attribute => format(formatter, attribute)})
       end
     end
 
-    def formatter_class(key, klass)
-      klass.format(unformatted_attributes[key])
-    end
-
-    def cleaned_path(klass)
-      klass.sub(%r(^lib\/),'')
-    end
-
-    def formatter_filepaths(autoloader=AutoLoader)
-      autoloader.require_all('lib/pop_cap/formatters').loaded_paths
+    def format(formatter, attribute, formatted_tag: FormattedTag)
+      formatted_tag.format(formatter, unformatted[attribute])
     end
   end
 end
