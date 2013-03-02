@@ -1,8 +1,8 @@
 module PopCap
-  # Public: This is a super class for all formatter classes.
-  # It establishes the default behavior of formatter classes.
-  #
   module Formatters
+    # Public: This is a super class for all formatter classes.
+    # It establishes the default behavior of formatter classes.
+    #
     class Formatter
       attr_reader :value, :options
 
@@ -29,7 +29,7 @@ module PopCap
       # Public: This returns an array of all subclasses.
       #
       def self.subclasses
-        ObjectSpace.each_object(Class).map do |klass| 
+        ObjectSpace.each_object(Class).select do |klass| 
           klass if is_a_subclass?(klass)
         end.uniq.compact
       end
@@ -46,7 +46,8 @@ module PopCap
       end
 
       def self.is_a_subclass?(klass)
-        klass.superclass && klass.superclass.name == self.name
+        superclass = klass.superclass
+        superclass && superclass.name == self.name
       end
     end
   end
