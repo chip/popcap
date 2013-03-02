@@ -1,4 +1,4 @@
-require 'pop_cap/class_maker'
+require 'pop_cap/class_support'
 require 'pop_cap/auto_loader'
 require 'pop_cap/tag_line'
 require 'pop_cap/tag_struct'
@@ -89,7 +89,7 @@ module PopCap
     def formatted_attributes
       formatter_filepaths.inject({}) do |formatted, filepath|
         name, path = filepath
-        klass = ClassMaker.new(cleaned_path(path)).constantize
+        klass = ClassSupport.new(cleaned_path(path)).constantize
         formatted.merge({name => formatter_class(name,klass)})
       end
     end
