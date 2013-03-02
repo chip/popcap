@@ -10,7 +10,7 @@ module PopCap
   module Taggable
     # Internal: This method reloads memoized tags.
     def reload!
-      @lined, @tags, @hash = nil, nil, nil
+      @unformattted, @tags, @hash = nil, nil, nil
     end
 
     # Internal: This method builds a sanitized hash from #raw_tags.
@@ -37,7 +37,7 @@ module PopCap
     #         artist: 'Sample Artist' }
     #
     def to_hash
-      @hash ||= lined_hash.merge(formatted_attributes)
+      @hash ||= unformatted_attributes.merge(formatted_attributes)
     end
 
     # Public: This method builds an tag structure from #to_hash. Also,
@@ -81,8 +81,8 @@ module PopCap
       TagStruct.new(hash)
     end
 
-    def lined_hash
-      @lined ||=
+    def unformatted_attributes
+      @unformattted ||=
         lines.inject({}) { |hsh,line| hsh.merge(TagLine.new(line)).to_hash }
     end
 
@@ -95,7 +95,7 @@ module PopCap
     end
 
     def formatter_class(key, klass)
-      klass.format(lined_hash[key])
+      klass.format(unformatted_attributes[key])
     end
 
     def cleaned_path(klass)
