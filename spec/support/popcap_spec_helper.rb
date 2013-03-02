@@ -82,5 +82,23 @@ module PopCapSpecHelper
       finish = Time.now
       puts "Time elapsed: #{((finish - stop)*1000).round(3)}ms"
     end
+
+    def object_names(const)
+      ObjectSpace.each_object(const).map { |cls| cls.name }
+    end
+
+    def all_names
+      ObjectSpace.each_object(Object).map do |obj|
+        obj.name if(obj.is_a?(Class) || obj.is_a?(Module))
+      end.compact
+    end
+
+    def classes
+      ObjectSpace.each_object(Class).map { |cls| cls }
+    end
+
+    def modules
+      ObjectSpace.each_object(Module).map { |cls| cls }
+    end
   end
 end
