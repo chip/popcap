@@ -1,4 +1,4 @@
-require 'pop_cap/tag_key'
+require 'pop_cap/tag/tag_key'
 
 module PopCap
   # Internal: This class sanitizes the raw output of FFmpeg to
@@ -6,7 +6,7 @@ module PopCap
   #
   # line - This is a single line of raw output from FFmpeg.
   #
-  class TagLine
+  class UnformattedTag
     def initialize(line)
       @line = line
     end
@@ -16,8 +16,8 @@ module PopCap
     # It uses TagKey to create the key for the hash.
     #
     # Examples
-    #   tl = TagLine.new('TAG:ARTIST=David Bowie')
-    #   to.to_hash
+    #   tag = UnformattedTag.new('TAG:ARTIST=David Bowie')
+    #   tag.to_hash
     #   # => {artist: 'David Bowie'}
     #
     def to_hash

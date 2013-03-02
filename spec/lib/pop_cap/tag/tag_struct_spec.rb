@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/tag_struct'
+require 'pop_cap/tag/tag_struct'
 
 module PopCap
   describe TagStruct do

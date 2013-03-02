@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/tag_key'
+require 'pop_cap/tag/tag_key'
 
 module PopCap
   describe TagKey do

@@ -1,7 +1,7 @@
 require 'pop_cap/class_support'
 require 'pop_cap/auto_loader'
-require 'pop_cap/tag_line'
-require 'pop_cap/tag_struct'
+require 'pop_cap/tag/unformatted_tag'
+require 'pop_cap/tag/tag_struct'
 
 module PopCap
   # Internal: This module is included in anything with a #raw_tags
@@ -83,7 +83,7 @@ module PopCap
 
     def unformatted_attributes
       @unformattted ||=
-        lines.inject({}) { |hsh,line| hsh.merge(TagLine.new(line)).to_hash }
+        lines.inject({}) { |hsh,line| hsh.merge(UnformattedTag.new(line)).to_hash }
     end
 
     def formatted_attributes
