@@ -1,3 +1,4 @@
+require 'json'
 require 'pop_cap/ffmpeg/ffmpeg'
 
 module PopCap
@@ -7,7 +8,7 @@ module PopCap
     # Public: This method returns the results of FFprobe -show_format.
     #
     def read
-      encode(output)
+      JSON.load(encode(output)).to_json
     end
 
     # Public: A convenience class method which wraps the instance
@@ -18,9 +19,8 @@ module PopCap
     end
 
     private
-
     def command
-      %W{ffprobe -show_format} + %W{#{filepath}}
+      %W{ffprobe -show_format -print_format json} + %W{#{filepath}}
     end
 
     def output

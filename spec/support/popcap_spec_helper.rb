@@ -1,38 +1,39 @@
 require 'fileutils'
 require 'ostruct'
+require 'json'
 
 module PopCapSpecHelper
   SAMPLE_FILE = 'spec/fixtures/sample.flac'
 
   class << self
     def raw_tags
-      <<-EOF.gsub(/^\s+/,'')
-        [FORMAT]
-        filename=#{File.realpath(SAMPLE_FILE)}
-        nb_streams=1
-        format_name=flac
-        format_long_name=raw FLAC
-        start_time=N/A
-        duration=1.000000
-        size=18291
-        bit_rate=146328
-        TAG:GENRE=Sample Genre
-        TAG:track=01
-        TAG:ALBUM=Sample Album
-        TAG:DATE=2012
-        TAG:TITLE=Sample Title
-        TAG:ARTIST=Sample Artist
-        [/FORMAT]
-      EOF
+      '{"format":{"filename":"/home/marsalis/.apps/popcap/spec/fixtures/sample.flac","nb_streams":1,"format_name":"flac","format_long_name":"raw FLAC","duration":"1.000000","size":"18291","bit_rate":"146328","tags":{"GENRE":"Sample Genre","track":"01","ALBUM":"Sample Album","DATE":"2012","TITLE":"Sample Title","ARTIST":"Sample Artist"}}}'
     end
 
-    def to_hash
+    def unformatted_hash
+      {
+        filename: File.realpath(SAMPLE_FILE),
+        nb_streams: 1,
+        format_name: 'flac',
+        format_long_name: 'raw FLAC',
+        duration: '1.000000',
+        filesize: '18291',
+        bit_rate: '146328',
+        genre: 'Sample Genre',
+        track: '01',
+        album: 'Sample Album',
+        date: '2012',
+        title: 'Sample Title',
+        artist: 'Sample Artist'
+      }
+    end
+
+    def formatted_hash
       {
         filename: File.realpath(SAMPLE_FILE),
         nb_streams: '1',
         format_name: 'flac',
         format_long_name: 'raw FLAC',
-        start_time: 'N/A',
         duration: '1',
         filesize: '17.9K',
         bit_rate: '146 kb/s',
