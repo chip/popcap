@@ -8,13 +8,6 @@ module PopCap
         def format; 'baz'; end
       end
 
-      def expect_to_require_all_formatters
-        formatters_path = 'lib/pop_cap/formatters/'
-        autoloader = double('AutoLoader')
-        autoloader.should_receive(:require_all).with(formatters_path)
-        Formatters::Formatter.subclasses(autoloader: autoloader)
-      end
-
       describe '.format' do
         let(:taggy) { Formatters::TagClass.new('foo', {option: 'bar'}) }
 
@@ -40,16 +33,12 @@ module PopCap
         it 'contains no nils' do
           expect(Formatter.subclasses).not_to include(nil)
         end
-
-        it { expect_to_require_all_formatters }
       end
 
       describe '.subclasses_demodulized' do
         it 'returns of the subclasses with their names demodulized' do
           expect(Formatter.subclasses_demodulized).to include('TagClass')
         end
-
-        it { expect_to_require_all_formatters }
       end
     end
 

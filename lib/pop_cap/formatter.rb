@@ -1,12 +1,10 @@
-require 'pop_cap/auto_loader'
-
 module PopCap
   module Formatters
     # Public: This is a super class for all formatter classes.
     # It establishes the default behavior of formatter classes.
     #
     class Formatter
-      FORMATTERS_PATH = 'lib/pop_cap/formatters/'
+      FORMATTERS_PATH = File.expand_path('formatters/*.rb', __FILE__)
       attr_reader :value, :options
 
       # Public: This class is constructed with a value & options hash.
@@ -31,9 +29,7 @@ module PopCap
 
       # Public: This returns an array of all subclasses.
       #
-      def self.subclasses(autoloader: AutoLoader)
-        autoloader.require_all(FORMATTERS_PATH)
-
+      def self.subclasses
         ObjectSpace.each_object(Class).select do |klass|
           klass if is_a_subclass?(klass)
         end.uniq.compact
