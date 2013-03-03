@@ -4,7 +4,6 @@ module PopCap
     # It establishes the default behavior of formatter classes.
     #
     class Formatter
-      FORMATTERS_PATH = File.expand_path('formatters/*.rb', __FILE__)
       attr_reader :value, :options
 
       # Public: This class is constructed with a value & options hash.
@@ -30,6 +29,8 @@ module PopCap
       # Public: This returns an array of all subclasses.
       #
       def self.subclasses
+        require_all_formatters
+
         ObjectSpace.each_object(Class).select do |klass|
           klass if is_a_subclass?(klass)
         end.uniq.compact
@@ -42,6 +43,12 @@ module PopCap
       end
 
       private
+      def self.require_all_formatters
+        Dir["#{File.dirname(__FILE__)}/formatters/*.rb"].each do |file|
+          require File.realpath(file)
+        end
+      end
+
       def self.demodulize(klass)
         klass.to_s.split('::').last
       end

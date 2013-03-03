@@ -33,6 +33,14 @@ module PopCap
         it 'contains no nils' do
           expect(Formatter.subclasses).not_to include(nil)
         end
+
+        it 'requires all Formatters files' do
+          Formatter.subclasses
+          formatters_path = '../../../../lib/pop_cap/formatters/*.rb'
+          Dir[File.expand_path(formatters_path, __FILE__)].each do |file|
+            expect($LOADED_FEATURES).to include(file)
+          end
+        end
       end
 
       describe '.subclasses_demodulized' do
