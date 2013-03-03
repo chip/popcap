@@ -24,38 +24,64 @@ audio_file = PopCap::AudioFile.new('sample.flac')
 
 audio_file.raw_tags => Returns JSON for the raw output from running ffprobe -show_format.
 
+      { 
+        "format": 
+          { 
+            "filename":"spec/fixtures/sample.flac",
+            "nb_streams":1,
+            "format_name":"flac",
+            "format_long_name":"raw FLAC",
+            "duration":"1.000000",
+            "size":"18291",
+            "bit_rate":"146328",
+
+              "tags": 
+              { 
+                "GENRE":"Sample Genre",
+                "track":"01",
+                "ALBUM":"Sample Album",
+                "DATE":"2012",
+                "TITLE":"Sample Title",
+                "ARTIST":"Sample Artist" 
+              }
+          }
+      }
+
 audio_file.unformatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.
-    { filename: 'sample.flac',
-      format_name: 'flac',
-      format_long_name: 'raw FLAC',
-      nb_streams: '1',
-      duration: '1.000000',
-      filesize: '18291',
-      bit_rate: '146328',
-      start_time: 'N/A',
-      genre: 'Sample Genre',
-      track: '01',
-      album: 'Sample Album',
-      date: '2012',
-      title: 'Sample Title',
-      artist: 'Sample Artist' }
+
+      {
+        filename: '$HOME/spec/fixtures/sample.flac',
+        nb_streams: 1,
+        format_name: 'flac',
+        format_long_name: 'raw FLAC',
+        duration: '1.000000',
+        filesize: '18291',
+        bit_rate: '146328',
+        genre: 'Sample Genre',
+        track: '01',
+        album: 'Sample Album',
+        date: '2012',
+        title: 'Sample Title',
+        artist: 'Sample Artist'
+      }
 
 audio_file.formatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.  It also applies internal formatters to make fields such as duration, bit_rate, filesize, & date human readable.
 
-    { filename: 'sample.flac',
-      format_name: 'flac',
-      format_long_name: 'raw FLAC',
-      nb_streams: '1',
-      duration: '1.000000',
-      filesize: '18291',
-      bit_rate: '146328',
-      start_time: 'N/A',
-      genre: 'Sample Genre',
-      track: '01',
-      album: 'Sample Album',
-      date: '2012',
-      title: 'Sample Title',
-      artist: 'Sample Artist' }
+      {
+        filename: '$HOME/spec/fixtures/sample.flac',
+        nb_streams: 1,
+        format_name: 'flac',
+        format_long_name: 'raw FLAC',
+        duration: '1',
+        filesize: '17.9K',
+        bit_rate: '146 kb/s',
+        genre: 'Sample Genre',
+        track: '01',
+        album: 'Sample Album',
+        date: 2012,
+        title: 'Sample Title',
+        artist: 'Sample Artist'
+      }
 
 audio_file.tags => Returns a tag structure using the #formatted values.
 
@@ -64,12 +90,12 @@ audio_file.tags => Returns a tag structure using the #formatted values.
     .bit_rate          =>  '146 kb/s'
     .date              =>  2012
     .duration          =>  '1'
-    .filename          =>  'spec/fixtures/sample.flac'
+    .filename          =>  ''$HOME/spec/fixtures/sample.flac'
     .filesize          =>  '17.9K'
     .format_long_name  =>  'raw FLAC'
     .format_name       =>  'flac'
     .genre             =>  'Sample Genre'
-    .nb_streams        =>  '1'
+    .nb_streams        =>  1
     .start_time        =>  'N/A'
     .title             =>  'Sample Title'
     .track             =>  '01'
@@ -84,7 +110,7 @@ This will update the metadata tags for an audio file.  It will also dynamically 
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
-audio_file.update_tags(artist: 'David Bowie'})
+audio_file.update_tags(artist: 'David Bowie')
 
 audio_file.update_tags(fancy_new_tag: 'Custom Tag Input')
 ```
@@ -93,9 +119,6 @@ Convert
 -------
 
 This will convert between audio file formats.  It is restricted to basic audio formats.  It also takes an optional bitrate for mp3 formats.  The original file is preserved during the conversion.
-
-Supported formats: aac, flac, m4a, mp3, ogg, wav
-Supported mp3 bitrates: 64, 128, 160, 192, 256, 320
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
