@@ -23,7 +23,7 @@ module PopCap
     def to_hash
       return {} unless ( @line && is_a_tag? )
       key,val = @line.split('=',2)
-      {TagKey.new(key).format => val}
+      {TagKey.format(key) => val}
     end
 
     # Public: This method conveniently wraps #new & #to_hash.

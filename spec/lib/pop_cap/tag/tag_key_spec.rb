@@ -3,7 +3,16 @@ require 'pop_cap/tag/tag_key'
 
 module PopCap
   describe TagKey do
-    context '#format' do
+    describe '.format' do
+      it 'wraps #new & #format' do
+        instance = double('TagKey')
+        TagKey.should_receive(:new).with('foo') { instance }
+        instance.should_receive(:format)
+        TagKey.format('foo')
+      end
+    end
+
+    describe '#format' do
       it 'is downcased' do
         expect(TagKey.new('UPCASE').format).to eq(:upcase)
       end
@@ -37,11 +46,11 @@ module PopCap
       end
 
       it 'returns empty string if empty' do
-        expect(TagKey.new('').format).to eq('')
+        expect(TagKey.new('').format).to be_empty
       end
 
       it 'returns empty string if nil' do
-        expect(TagKey.new(nil).format).to eq('')
+        expect(TagKey.new(nil).format).to be_empty
       end
     end
   end
