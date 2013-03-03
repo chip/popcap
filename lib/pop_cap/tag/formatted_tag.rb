@@ -1,5 +1,3 @@
-require 'pop_cap/auto_loader'
-
 module PopCap
   # Public: This class will apply a provided Formatter to
   # the supplied value.
