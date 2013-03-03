@@ -25,7 +25,7 @@ module PopCap
     #   klass = SomeClass.new
     #   klass.to_hash
     #   # =>
-    #       { filename: 'spec/support/sample.flac',
+    #       { filename: 'spec/fixtures/sample.flac',
     #         format_name: 'flac',
     #         duration: '1.000000',
     #         filesize: '18291',
@@ -59,7 +59,7 @@ module PopCap
     #    .bit_rate          =>  '146 kb/s'
     #    .date              =>  2012
     #    .duration          =>  '1'
-    #    .filename          =>  'spec/support/sample.flac'
+    #    .filename          =>  'spec/fixtures/sample.flac'
     #    .filesize          =>  '17.9K'
     #    .format_long_name  =>  'raw FLAC'
     #    .format_name       =>  'flac'

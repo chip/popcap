@@ -7,9 +7,9 @@ module PopCap
     after { PopCapSpecHelper.remove_converted }
 
     it 'creates a new audio file with the specified format & bitrate' do
-      audio_file = AudioFile.new('spec/support/sample.flac')
+      audio_file = AudioFile.new(PopCapSpecHelper::SAMPLE_FILE)
       audio_file.convert(:mp3, 128)
-      expect(File.exists?('spec/support/sample.mp3')).to be_true
+      expect(File.exists?('spec/fixtures/sample.mp3')).to be_true
     end
   end
 end

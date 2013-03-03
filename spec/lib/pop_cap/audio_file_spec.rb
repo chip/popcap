@@ -5,7 +5,7 @@ require 'support/popcap_spec_helper'
 module PopCap
   describe AudioFile do
     let(:audio_file) { AudioFile.new(filepath) }
-    let(:filepath) { 'spec/support/sample.flac' }
+    let(:filepath) { PopCapSpecHelper::SAMPLE_FILE }
     let(:included_modules) { AudioFile.included_modules }
 
     before { PopCapSpecHelper.setup }

@@ -2,11 +2,13 @@ require 'fileutils'
 require 'ostruct'
 
 module PopCapSpecHelper
+  SAMPLE_FILE = 'spec/fixtures/sample.flac'
+
   class << self
     def raw_tags
       <<-EOF.gsub(/^\s+/,'')
         [FORMAT]
-        filename=#{File.realpath('spec/support/sample.flac')}
+        filename=#{File.realpath(SAMPLE_FILE)}
         nb_streams=1
         format_name=flac
         format_long_name=raw FLAC
@@ -26,7 +28,7 @@ module PopCapSpecHelper
 
     def to_hash
       {
-        filename: File.realpath('spec/support/sample.flac'),
+        filename: File.realpath(SAMPLE_FILE),
         nb_streams: '1',
         format_name: 'flac',
         format_long_name: 'raw FLAC',
@@ -46,7 +48,7 @@ module PopCapSpecHelper
     def tags
       OpenStruct.new(
         {
-        filename: File.realpath('spec/support/sample.flac'),
+        filename: File.realpath(SAMPLE_FILE),
         nb_streams: '1',
         format_name: 'flac',
         format_long_name: 'raw FLAC',
@@ -63,24 +65,16 @@ module PopCapSpecHelper
     end
 
     def remove_converted
-      FileUtils.rm_f('spec/support/sample.mp3')
+      FileUtils.rm_f('spec/fixtures/sample.mp3')
     end
 
     def setup
-      FileUtils.cp('spec/support/sample.flac', 'spec/support/backup.flac')
+      FileUtils.cp(SAMPLE_FILE, 'spec/fixtures/backup.flac')
     end
 
     def teardown
-      FileUtils.mv('spec/support/backup.flac', 'spec/support/sample.flac')
-      FileUtils.rm_f('spec/support/sample.mp3')
-    end
-
-    def benchmark(&block)
-      start = Time.now
-      raise(ArgumentError, 'Provide a block.') unless block_given?
-      yield
-      finish = Time.now
-      puts "Time elapsed: #{((finish - stop)*1000).round(3)}ms"
+      FileUtils.mv('spec/fixtures/backup.flac', SAMPLE_FILE)
+      FileUtils.rm_f('spec/fixtures/sample.mp3')
     end
 
     def object_names(const)

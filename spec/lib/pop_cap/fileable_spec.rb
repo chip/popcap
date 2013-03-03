@@ -13,7 +13,7 @@ module PopCap
       end
     end
 
-    let(:filepath) { 'spec/support/sample.flac' }
+    let(:filepath) { PopCapSpecHelper::SAMPLE_FILE }
     let(:fc) { FileClass.new(filepath) }
 
     context '#filename' do
@@ -81,16 +81,16 @@ module PopCap
 
     context '#rename' do
       it 'removes a file with specified name' do
-        new_name = 'spec/support/example.file'
+        new_name = 'spec/fixtures/example.file'
         FileUtils.should_receive(:mv).with(filepath, new_name)
         fc.rename('example.file')
       end
 
       it 'updates filepath' do
-        new_name = 'spec/support/example.file'
+        new_name = 'spec/fixtures/example.file'
         FileUtils.should_receive(:mv).with(filepath, new_name)
         fc.rename('example.file')
-        expect(fc.filepath).to eq('spec/support/example.file')
+        expect(fc.filepath).to eq('spec/fixtures/example.file')
       end
     end
 
@@ -111,7 +111,7 @@ module PopCap
 
     context '#directory' do
       it 'returns the directory path for the file' do
-        expect(fc.directory).to eq 'spec/support'
+        expect(fc.directory).to eq 'spec/fixtures'
       end
     end
   end

@@ -8,7 +8,7 @@ module PopCap
   #
   # Examples
   #
-  #   file = 'spec/support/sample.flac'
+  #   file = 'spec/fixtures/sample.flac'
   #   ffmpeg = FFmpeg.new(filepath)
   #
   class FFmpeg

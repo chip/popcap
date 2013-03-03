@@ -4,7 +4,7 @@ require 'support/popcap_spec_helper'
 
 describe PopCap do
   let(:audio_file) { PopCap::AudioFile.new(filepath) }
-  let(:filepath) { 'spec/support/sample.flac' }
+  let(:filepath) { PopCapSpecHelper::SAMPLE_FILE }
 
   context '#update_tags' do
     before { PopCapSpecHelper.setup }

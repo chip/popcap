@@ -12,7 +12,7 @@ module PopCap
   #
   # Examples
   #
-  #   filepath = 'spec/support/sample.flac'
+  #   filepath = 'spec/fixtures/sample.flac'
   #   af = AudioFile.new(filepath)
   #
   #
@@ -39,9 +39,9 @@ module PopCap
     # bitrate - An optional bitrate for mp3s.
     #
     # Examples
-    #   audio_file = AudioFile.new('spec/support/sample.flac')
+    #   audio_file = AudioFile.new('spec/fixtures/sample.flac')
     #   audio_file.convert('mp3', 128)
-    #   # => 'spec/support/sample.mp3'
+    #   # => 'spec/fixtures/sample.mp3'
     #
     def convert(format, bitrate=192)
       Converter.convert(filepath, {format: format, bitrate: bitrate})
@@ -51,11 +51,11 @@ module PopCap
     # This method returns the raw_tags from FFmpeg.
     #
     # Examples
-    #   audio_file = AudioFile.new('spec/support/sample.flac')
+    #   audio_file = AudioFile.new('spec/fixtures/sample.flac')
     #   audio_file.raw_tags
     #   # =>
     #    [FORMAT]
-    #    filename=spec/support/sample.flac
+    #    filename=spec/fixtures/sample.flac
     #    nb_streams=1
     #    format_name=flac
     #    format_long_name=raw FLAC

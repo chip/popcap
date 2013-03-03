@@ -1,10 +1,11 @@
 require 'spec_helper'
+require 'support/popcap_spec_helper'
 require 'pop_cap/ffmpeg/ffmpeg'
 
 module PopCap
   describe FFmpeg do
 
-    let(:filepath) { File.realpath('spec/support/sample.flac') }
+    let(:filepath) { File.realpath(PopCapSpecHelper::SAMPLE_FILE) }
     let(:ffmpeg) { FFmpeg.new(filepath) }
 
     it 'returns its filepath' do
