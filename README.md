@@ -22,25 +22,9 @@ Read the metadata tags from an audio file.
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
 
-audio_file.raw_tags => Returns a string of the raw output from running ffprobe -show_format.
-    [FORMAT]
-    filename=sample.flac
-    nb_streams=1
-    format_name=flac
-    format_long_name=raw FLAC
-    start_time=N/A
-    duration=1.000000
-    size=18291
-    bit_rate=146328
-    TAG:GENRE=Sample Genre
-    TAG:track=01
-    TAG:ALBUM=Sample Album
-    TAG:DATE=2012
-    TAG:TITLE=Sample Title
-    TAG:ARTIST=Sample Artist
-    [/FORMAT]
+audio_file.raw_tags => Returns JSON for the raw output from running ffprobe -show_format.
 
-audio_file.to_hash => Returns a Ruby hash after sanitizing the raw output of #raw_tags.
+audio_file.unformatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.
     { filename: 'sample.flac',
       format_name: 'flac',
       format_long_name: 'raw FLAC',
@@ -56,7 +40,25 @@ audio_file.to_hash => Returns a Ruby hash after sanitizing the raw output of #ra
       title: 'Sample Title',
       artist: 'Sample Artist' }
 
-audio_file.tags => Returns a tag structure after applying formatters #to_hash.
+audio_file.formatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.  It also applies internal formatters to make fields such as duration, bit_rate, filesize, & date human readable.
+
+    { filename: 'sample.flac',
+      format_name: 'flac',
+      format_long_name: 'raw FLAC',
+      nb_streams: '1',
+      duration: '1.000000',
+      filesize: '18291',
+      bit_rate: '146328',
+      start_time: 'N/A',
+      genre: 'Sample Genre',
+      track: '01',
+      album: 'Sample Album',
+      date: '2012',
+      title: 'Sample Title',
+      artist: 'Sample Artist' }
+
+audio_file.tags => Returns a tag structure using the #formatted values.
+
     .album             =>  'Sample Album'
     .artist            =>  'Sample Artist'
     .bit_rate          =>  '146 kb/s'
@@ -72,7 +74,7 @@ audio_file.tags => Returns a tag structure after applying formatters #to_hash.
     .title             =>  'Sample Title'
     .track             =>  '01'
 
-audio_file.reload! => Reload an instance of itself, useful when updating tags.
+audio_file.reload! => Reload an instance of itself, useful when updating tags.  This behavior is built in, but will need to be called manually in certain situations (such as moving a file on the file system, deleting a file, etc.)
 ```
 
 Update Tags
@@ -82,9 +84,9 @@ This will update the metadata tags for an audio file.  It will also dynamically 
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
-audio_file.update_tags({artist: 'David Bowie'})
+audio_file.update_tags(artist: 'David Bowie'})
 
-audio_file.update_tags({fancy_new_tag: 'Custom Tag Input'})
+audio_file.update_tags(fancy_new_tag: 'Custom Tag Input')
 ```
 
 Convert
@@ -133,5 +135,6 @@ audio_file.tmppath # => returns the temporary path, e.g. '/tmp/sample.flac'
 
 Dependencies
 ------------
+Ruby 2.0+
 
 [FFmpeg](http://ffmpeg.org)
