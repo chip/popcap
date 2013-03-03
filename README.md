@@ -22,7 +22,8 @@ Read the metadata tags from an audio file.
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
 
-audio_file.raw_tags => Returns JSON for the raw output from running ffprobe -show_format.
+audio_file.raw_tags => Returns JSON for the raw output from 
+running "ffprobe -show_format -print_format json."
 
       { 
         "format": 
@@ -47,7 +48,8 @@ audio_file.raw_tags => Returns JSON for the raw output from running ffprobe -sho
           }
       }
 
-audio_file.unformatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.
+audio_file.unformatted => Returns a Ruby hash after sanitizing 
+the raw output of #raw_tags.
 
       {
         filename: '$HOME/spec/fixtures/sample.flac',
@@ -65,7 +67,10 @@ audio_file.unformatted => Returns a Ruby hash after sanitizing the raw output of
         artist: 'Sample Artist'
       }
 
-audio_file.formatted => Returns a Ruby hash after sanitizing the raw output of #raw_tags.  It also applies internal formatters to make fields such as duration, bit_rate, filesize, & date human readable.
+audio_file.formatted => Returns a Ruby hash after sanitizing 
+the raw output of #raw_tags.  It also applies internal formatters 
+on fields such as duration, bit_rate, filesize, & date,
+returning human readable output.
 
       {
         filename: '$HOME/spec/fixtures/sample.flac',
@@ -100,13 +105,18 @@ audio_file.tags => Returns a tag structure using the #formatted values.
     .title             =>  'Sample Title'
     .track             =>  '01'
 
-audio_file.reload! => Reload an instance of itself, useful when updating tags.  This behavior is built in, but will need to be called manually in certain situations (such as moving a file on the file system, deleting a file, etc.)
+audio_file.reload! => Reload an instance of itself, 
+useful when updating tags.  This behavior is built in, 
+but will need to be called manually in certain situations; 
+(such as moving a file on the file system, deleting a file, etc.)
 ```
 
 Update Tags
 -----------
 
-This will update the metadata tags for an audio file.  It will also dynamically add any newly provided tags.  It takes a hash of attributes.
+This will update the metadata tags for an audio file.  
+It will also dynamically add any newly provided tags.  
+It takes a hash of attributes.
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
@@ -118,7 +128,10 @@ audio_file.update_tags(fancy_new_tag: 'Custom Tag Input')
 Convert
 -------
 
-This will convert between audio file formats.  It is restricted to basic audio formats.  It also takes an optional bitrate for mp3 formats.  The original file is preserved during the conversion.
+This will convert between audio file formats.  
+It is restricted to basic audio formats.  
+It also takes an optional bitrate for mp3 formats.  
+The original file is preserved during the conversion.
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
@@ -151,7 +164,8 @@ audio_file.move('destination') # = > moves file to destination
 
 audio_file.rename('new_name.flac') # => renames file
 
-audio_file.restore # => restores file from backup_path, takes an optional path as well
+audio_file.restore # => restores file from backup_path; 
+                        takes an optional path
 
 audio_file.tmppath # => returns the temporary path, e.g. '/tmp/sample.flac'
 ```
