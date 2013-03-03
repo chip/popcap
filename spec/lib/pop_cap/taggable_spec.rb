@@ -17,20 +17,33 @@ module PopCap
       expect(sc).to respond_to(:raw_tags)
     end
 
-    context '#to_hash' do
-      it 'builds a sanitized hash from FFmpeg raw_tags' do
-        expect(sc.to_hash).to include(PopCapSpecHelper.to_hash)
+    describe '#unformatted' do
+      it 'returns TagHash#hash' do
+        TagHash.should_receive(:hash).with(sc.raw_tags)
+        sc.unformatted
       end
 
       it 'is memoized' do
-        sc.to_hash
-        expect(sc.instance_variable_get('@hash')).
-          to include(PopCapSpecHelper.to_hash)
+        sc.unformatted
+        TagHash.should_not_receive(:new)
+        sc.unformatted
       end
     end
 
-    context '#tags' do
-      it 'builds a tag structure of from a hash' do
+    describe '#formatted' do
+      it 'builds a formatted hash' do
+        expect(sc.formatted).to include(PopCapSpecHelper.formatted_hash)
+      end
+
+      it 'is memoized' do
+        sc.formatted
+        FormattedTag.should_not_receive(:new)
+        sc.formatted
+      end
+    end
+
+    describe '#tags' do
+      it 'builds a tag structure from #formatted_hash' do
         expect(sc.tags.album).to eq PopCapSpecHelper.tags.album
         expect(sc.tags.artist).to eq PopCapSpecHelper.tags.artist
         expect(sc.tags.bit_rate).to eq PopCapSpecHelper.tags.bit_rate
@@ -46,13 +59,14 @@ module PopCap
 
       it 'is memoized' do
         sc.tags
-        expect(sc.instance_variable_get('@tags')).to be_true
+        TagStruct.should_not_receive(:new)
+        sc.tags
       end
     end
 
     context '#reload!' do
       it 'sets instance variables to nil' do
-        %w(@attributes @hash @tags).each do |instance|
+        %w(@formatted_hash @unformatted_hash @tag_struct).each do |instance|
           sc.reload!
           expect(sc.instance_variable_get(instance)).to be_nil
         end

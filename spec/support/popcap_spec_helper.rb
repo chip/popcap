@@ -31,7 +31,7 @@ module PopCapSpecHelper
     def formatted_hash
       {
         filename: File.realpath(SAMPLE_FILE),
-        nb_streams: '1',
+        nb_streams: 1,
         format_name: 'flac',
         format_long_name: 'raw FLAC',
         duration: '1',
