@@ -106,15 +106,15 @@ module PopCap
       TagStruct.new(hash)
     end
 
-    def format(formatter, attribute, tag: FormattedTag)
-      tag.format(formatter, unformatted[attribute])
-    end
-
-    def formatted_tags
+    def formatted_tags(support: ClassSupport)
       Formatters::Formatter.subclasses.inject({}) do |formatted, formatter|
-        attribute = ClassSupport.new(formatter).symbolize
+        attribute = support.new(formatter).symbolize
         formatted.merge({attribute => format(formatter, attribute)})
       end
+    end
+
+    def format(formatter, attribute, tag: FormattedTag)
+      tag.format(formatter, unformatted[attribute])
     end
   end
 end
