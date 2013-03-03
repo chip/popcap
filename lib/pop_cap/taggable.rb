@@ -74,17 +74,12 @@ module PopCap
     end
 
     private
-    def lines
-      self.raw_tags.split("\n")
-    end
-
     def build_tag_struct(hash)
       TagStruct.new(hash)
     end
 
-    def unformatted
-      @attributes ||=
-        lines.inject({}) { |hsh,line| hsh.merge(UnformattedTag.new(line)).to_hash }
+    def format(formatter, attribute, tag: FormattedTag)
+      tag.format(formatter, unformatted[attribute])
     end
 
     def formatted
@@ -94,8 +89,14 @@ module PopCap
       end
     end
 
-    def format(formatter, attribute, formatted_tag: FormattedTag)
-      formatted_tag.format(formatter, unformatted[attribute])
+    def raw
+      self.raw_tags.split("\n")
+    end
+
+    def unformatted(klass: UnformattedTag)
+      @attributes ||= raw.inject({}) do |attrs, tag| 
+        attrs.merge(klass.to_hash(tag))
+      end
     end
   end
 end
