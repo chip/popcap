@@ -7,7 +7,11 @@ module PopCapSpecHelper
 
   class << self
     def raw_tags
-      '{"format":{"filename":"/home/marsalis/.apps/popcap/spec/fixtures/sample.flac","nb_streams":1,"format_name":"flac","format_long_name":"raw FLAC","duration":"1.000000","size":"18291","bit_rate":"146328","tags":{"GENRE":"Sample Genre","track":"01","ALBUM":"Sample Album","DATE":"2012","TITLE":"Sample Title","ARTIST":"Sample Artist"}}}'
+      '{"format":{"filename":"/home/marsalis/.apps/popcap/spec/fixtures/'\
+        'sample.flac","nb_streams":1,"format_name":"flac","format_long_name"'\
+        ':"raw FLAC","duration":"1.000000","size":"18291","bit_rate":"146328"'\
+        ',"tags":{"GENRE":"Sample Genre","track":"01","ALBUM":"Sample Album",'\
+        '"DATE":"2012","TITLE":"Sample Title","ARTIST":"Sample Artist"}}}'
     end
 
     def unformatted_hash

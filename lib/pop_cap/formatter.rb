@@ -34,7 +34,7 @@ module PopCap
       def self.subclasses(autoloader: AutoLoader)
         autoloader.require_all(FORMATTERS_PATH)
 
-        ObjectSpace.each_object(Class).select do |klass| 
+        ObjectSpace.each_object(Class).select do |klass|
           klass if is_a_subclass?(klass)
         end.uniq.compact
       end

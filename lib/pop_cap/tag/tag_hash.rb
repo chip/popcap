@@ -18,7 +18,7 @@ module PopCap
     end
 
     # Public: This method wraps #new & #hash.
-    # 
+    #
     def self.hash(json)
       new(json).hash
     end

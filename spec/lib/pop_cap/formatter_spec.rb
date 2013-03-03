@@ -31,7 +31,7 @@ module PopCap
         end
 
         it 'includes the subclass only once' do
-          unique = Formatter.subclasses.select do |cls| 
+          unique = Formatter.subclasses.select do |cls|
             cls == PopCap::Formatters::TagClass
           end
           expect(unique.size).to eq 1

@@ -21,7 +21,7 @@ module PopCap
       it 'formats json output as a hash' do
         expect(tag_hash.hash).to eq(PopCapSpecHelper.unformatted_hash)
       end
-    end 
+    end
 
     describe '.hash' do
       it 'wraps #new & #hash' do
