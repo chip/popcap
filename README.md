@@ -22,7 +22,7 @@ Read the metadata tags from an audio file.
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
 
-audio_file.raw_tags => Returns JSON for the raw output from 
+audio_file.raw_output => Returns JSON for the raw output from 
 running "ffprobe -show_format -print_format json."
 
       { 
@@ -49,7 +49,7 @@ running "ffprobe -show_format -print_format json."
       }
 
 audio_file.unformatted => Returns a Ruby hash after sanitizing 
-the raw output of #raw_tags.
+the raw output of #raw_output.
 
       {
         filename: '$HOME/spec/fixtures/sample.flac',
@@ -68,7 +68,7 @@ the raw output of #raw_tags.
       }
 
 audio_file.formatted => Returns a Ruby hash after sanitizing 
-the raw output of #raw_tags.  It also applies internal formatters 
+the raw output of #raw_output.  It also applies internal formatters 
 on fields such as duration, bit_rate, filesize, & date,
 returning human readable output.
 
@@ -120,9 +120,9 @@ It takes a hash of attributes.
 
 ```
 audio_file = PopCap::AudioFile.new('sample.flac')
-audio_file.update_tags(artist: 'David Bowie')
+audio_file.update(artist: 'David Bowie')
 
-audio_file.update_tags(fancy_new_tag: 'Custom Tag Input')
+audio_file.update(fancy_new_tag: 'Custom Tag Input')
 ```
 
 Convert
