@@ -16,7 +16,6 @@ module PopCap
     def initialize(hash)
       raise(ArgumentError, argument_error_message) unless hash.kind_of?(Hash)
       @hash = hash
-      @tags = {}
       define_instance_methods
     end
 
@@ -35,8 +34,8 @@ module PopCap
     # Public: This method is a custom each iterator for tags.
     #
     def each(&block)
-      @tags.each do |tag|
-        block_given? ? block.call(tag) : tag
+      @hash.each do |elem|
+        block_given? ? block.call(elem) : elem
       end
     end
 
@@ -49,7 +48,6 @@ module PopCap
       @hash.each do |key, val|
         unless self.class.respond_to? key
           define_singleton_method(key) { val }
-          @tags[key] = val
         end
       end
     end
