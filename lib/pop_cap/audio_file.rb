@@ -169,6 +169,7 @@ module PopCap
     def update(updates={})
       TagWriter.write(filepath, updates)
       self.reload!
+      self.tags
     end
   end
 end

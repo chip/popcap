@@ -102,6 +102,11 @@ module PopCap
         audio_file.update(updates)
         expect(audio_file.tags.artist).to eq 'New Artist'
       end
+
+      it 'returns updated hash' do
+        updates = {artist: 'New Artist'}
+        expect(audio_file.update(updates)).to eq audio_file.tags
+      end
     end
 
     describe '#convert' do
