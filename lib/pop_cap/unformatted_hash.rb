@@ -3,7 +3,7 @@ require 'json'
 module PopCap
   # Public: This class formats the JSON output of TagReader.
   #
-  class TagHash
+  class UnformattedHash
     attr_reader :json
 
     def initialize(json)
@@ -14,7 +14,7 @@ module PopCap
     # The keys have been converted to symbols.
     #
     def hash
-      renamed_hash.reject { |key,_| key == :size }
+      renamed_hash
     end
 
     # Public: This method wraps #new & #hash.
@@ -25,7 +25,9 @@ module PopCap
 
     private
     def renamed_hash
-      symbolized_hash.merge({filesize: size_element})
+      symbolized_hash.
+        merge({filesize: size_element}).
+        reject { |key,_| key == :size }
     end
 
     def symbolized_hash

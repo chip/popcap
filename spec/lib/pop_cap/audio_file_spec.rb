@@ -1,11 +1,11 @@
-require 'pop_cap/audio_file'
 require 'spec_helper'
 require 'support/popcap_spec_helper'
+require 'pop_cap/audio_file'
 
 module PopCap
   describe AudioFile do
     let(:audio_file) { AudioFile.new(filepath) }
-    let(:filepath) { PopCapSpecHelper::SAMPLE_FILE }
+    let(:filepath) { File.realpath(PopCapSpecHelper::SAMPLE_FILE) }
     let(:included_modules) { AudioFile.included_modules }
 
     before { PopCapSpecHelper.setup }
@@ -13,8 +13,8 @@ module PopCap
 
     subject { audio_file }
 
-    context '#filepath' do
-      its(:filepath) { should eq File.realpath(filepath) }
+    describe '#filepath' do
+      its(:filepath) { should eq File.realpath(PopCapSpecHelper::SAMPLE_FILE) }
 
       it 'raises an error if file does not exist' do
         expect do
@@ -23,43 +23,93 @@ module PopCap
       end
     end
 
-    context 'ffmpeg methods' do
-      it { expect(audio_file).to respond_to(:convert) }
-      it { expect(audio_file).to respond_to(:raw_tags) }
-      it { expect(audio_file).to respond_to(:update_tags) }
-    end
-
     context 'included modules' do
       it 'includes Fileable' do
         expect(included_modules).to include Fileable
       end
-
-      it 'includes Taggable' do
-        expect(included_modules).to include Taggable
-      end
     end
 
-    context '#raw_tags' do
+    describe '#raw_output' do
       it 'is memoized' do
-        audio_file.raw_tags
-        expect(audio_file.instance_variable_get('@raw')).
-          to eq PopCapSpecHelper.raw_tags
+        audio_file.raw_output
+        TagReader.should_not_receive(:read).with(filepath)
+        audio_file.raw_output
+      end
+
+      it { expect(audio_file.raw_output).to eq(PopCapSpecHelper.raw_output) }
+    end
+
+    describe '#unformatted' do
+      it 'is memoized' do
+        audio_file.unformatted
+        UnformattedHash.should_not_receive(:hash).with(audio_file.raw_output)
+        audio_file.unformatted
+      end
+
+      it do
+        expect(audio_file.unformatted).to eq PopCapSpecHelper.unformatted_hash
       end
     end
 
-    context '#reload!' do
-      it 'reloads raw tags' do
-        audio_file.raw_tags
-        expect(audio_file.instance_variable_get('@raw')).not_to be_nil
+    describe '#formatted' do
+      it 'is memoized' do
+        audio_file.formatted
+        FormattedHash.should_not_receive(:formatted).
+          with(audio_file.unformatted)
+        audio_file.formatted
+      end
+
+      it { expect(audio_file.formatted).to eq(PopCapSpecHelper.formatted_hash) }
+    end
+
+    describe '#tags' do
+      it 'is memoized' do
+        audio_file.tags
+        TagStruct.should_not_receive(:new).with(audio_file.formatted)
+        audio_file.tags
+      end
+
+      it 'includes all tags for the sample file' do
+        PopCapSpecHelper.formatted_hash.each do |key,val|
+          expect(audio_file.tags.send(key)).to eq val
+        end
+      end
+
+      it 'is a TagStruct' do
+        expect(audio_file.tags).to be_a TagStruct
+      end
+    end
+
+    describe '#reload!' do
+      it 'resets all MEMOIZABLES' do
+        audio_file.tags
         audio_file.reload!
-        expect(audio_file.instance_variable_get('@raw')).to be_nil
+        ::MEMOIZABLES.each do |var|
+          expect(audio_file.instance_variable_get(var)).to be_nil
+        end
       end
     end
 
-    context '#update_tags' do
+    describe '#update' do
       it 'reloads after tags updated' do
         audio_file.should_receive(:reload!)
-        audio_file.update_tags({foo: 'foo'})
+        audio_file.update({foo: 'foo'})
+      end
+
+      it 'updates tags for file' do
+        expect(audio_file.tags.artist).to eq 'Sample Artist'
+        updates = {artist: 'New Artist'}
+        audio_file.update(updates)
+        expect(audio_file.tags.artist).to eq 'New Artist'
+      end
+    end
+
+    describe '#convert' do
+      after { PopCapSpecHelper.remove_converted }
+
+      it 'creates a new audio file with the specified format & bitrate' do
+        audio_file.convert(:mp3, 128)
+        expect(File.exists?('spec/fixtures/sample.mp3')).to be_true
       end
     end
   end

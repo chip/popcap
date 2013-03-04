@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/tag/tag_struct'
+require 'pop_cap/tag_struct'
 
 module PopCap
   describe TagStruct do
@@ -36,8 +36,21 @@ module PopCap
       end
     end
 
-    it 'has a custom #to_s method' do
-      expect(ts.to_s).to eq "#<PopCap::TagStruct artist: Artist, date: 1984>"
+    describe '#to_s' do
+      it 'has a custom #to_s method' do
+        expect(ts.to_s).to eq "#<PopCap::TagStruct artist: Artist, date: 1984>"
+      end
+    end
+
+    describe '#each' do
+      let(:tags) { {foo: 'foo', bar: 'bar', baz: 'baz'} }
+      let(:tag_struct) { TagStruct.new tags }
+
+      it 'has a custom #each method for all defined methods' do
+        tag_struct.each do |key,val|
+          expect(tags[key]).to eq val
+        end
+      end
     end
 
     describe 'already defined methods' do

@@ -4,15 +4,15 @@ require 'pop_cap/formatter'
 module PopCap
   module Formatters
     describe Formatter do
-      class TagClass < Formatter
+      class Filesize < Formatter
         def format; 'baz'; end
       end
 
       describe '.format' do
-        let(:taggy) { Formatters::TagClass.new('foo', {option: 'bar'}) }
+        let(:taggy) { Formatters::Filesize.new('foo', {option: 'bar'}) }
 
         it 'wraps #format in a class method' do
-          klass = Formatters::TagClass.format('foo', {option: 'bar'})
+          klass = Formatters::Filesize.format('foo', {option: 'bar'})
           instance = taggy.format
           expect(klass).to eq instance
         end
@@ -20,12 +20,12 @@ module PopCap
 
       describe '.subclasses' do
         it 'returns a list of all subclasses in the ObjectSpace' do
-          expect(Formatter.subclasses).to include(PopCap::Formatters::TagClass)
+          expect(Formatter.subclasses).to include(PopCap::Formatters::Filesize)
         end
 
         it 'includes the subclass only once' do
           unique = Formatter.subclasses.select do |cls|
-            cls == PopCap::Formatters::TagClass
+            cls == PopCap::Formatters::Filesize
           end
           expect(unique.size).to eq 1
         end
@@ -45,19 +45,20 @@ module PopCap
 
       describe '.subclasses_demodulized' do
         it 'returns of the subclasses with their names demodulized' do
-          expect(Formatter.subclasses_demodulized).to include('TagClass')
+          expect(Formatter.subclasses_demodulized).
+            to include('Filesize')
         end
       end
     end
 
     describe '#format' do
-      let(:taggy) { Formatters::TagClass.new('foo', {option: 'bar'}) }
+      let(:taggy) { Formatters::Filesize.new('foo', {option: 'bar'}) }
 
       it { expect(taggy).to respond_to(:format) }
     end
 
     describe '#new' do
-      let(:taggy) { Formatters::TagClass.new('foo', {option: 'bar'}) }
+      let(:taggy) { Formatters::Filesize.new('foo', {option: 'bar'}) }
 
       it 'has a getter for value' do
         expect(taggy.value).to eq 'foo'

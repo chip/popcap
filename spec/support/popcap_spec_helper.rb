@@ -6,7 +6,7 @@ module PopCapSpecHelper
   SAMPLE_FILE = 'spec/fixtures/sample.flac'
 
   class << self
-    def raw_tags
+    def raw_output
       '{"format":{"filename":"/home/marsalis/.apps/popcap/spec/fixtures/'\
         'sample.flac","nb_streams":1,"format_name":"flac","format_long_name"'\
         ':"raw FLAC","duration":"1.000000","size":"18291","bit_rate":"146328"'\
@@ -54,7 +54,7 @@ module PopCapSpecHelper
       OpenStruct.new(
         {
         filename: File.realpath(SAMPLE_FILE),
-        nb_streams: '1',
+        nb_streams: 1,
         format_name: 'flac',
         format_long_name: 'raw FLAC',
         start_time: 'N/A',
@@ -80,24 +80,6 @@ module PopCapSpecHelper
     def teardown
       FileUtils.mv('spec/fixtures/backup.flac', SAMPLE_FILE)
       FileUtils.rm_f('spec/fixtures/sample.mp3')
-    end
-
-    def object_names(const)
-      ObjectSpace.each_object(const).map { |cls| cls.name }
-    end
-
-    def all_names
-      ObjectSpace.each_object(Object).map do |obj|
-        obj.name if(obj.is_a?(Class) || obj.is_a?(Module))
-      end.compact
-    end
-
-    def classes
-      ObjectSpace.each_object(Class).map { |cls| cls }
-    end
-
-    def modules
-      ObjectSpace.each_object(Module).map { |cls| cls }
     end
   end
 end
