@@ -11,6 +11,7 @@ module PopCap
     #
     def write
       unless execute.success?
+        FileUtils.rm_f(tmppath)
         raise(FFmpegError, error_message('writing'))
       end
       FileUtils.move(tmppath, filepath)

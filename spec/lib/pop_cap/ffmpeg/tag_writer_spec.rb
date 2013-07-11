@@ -54,6 +54,15 @@ module PopCap
             writer.write
           end.to raise_error(FFmpegError, "Error writing #{file}.")
         end
+
+        it 'removes the temp file' do
+          expect do
+            commander.should_receive(:new).with(*command) { instance }
+            instance.stub_chain(:execute, :success?) { false }
+            FileUtils.should_receive(:rm_f).with('/tmp/file.flac')
+            writer.write
+          end.to raise_error(FFmpegError, "Error writing #{file}.")
+        end
       end
     end
   end
