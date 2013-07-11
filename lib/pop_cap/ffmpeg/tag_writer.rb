@@ -10,7 +10,7 @@ module PopCap
     # is done to prevent corrupting the original file.
     #
     def write
-      unless commander.new(*command).execute.success?
+      unless execute.success?
         raise(FFmpegError, error_message('writing'))
       end
       FileUtils.move(tmppath, filepath)

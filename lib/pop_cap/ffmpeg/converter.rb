@@ -8,7 +8,7 @@ module PopCap
     # Public: This method will execute the conversion.
     #
     def convert
-      unless commander.new(*command).execute.success?
+      unless execute.success?
         raise(FFmpegError, error_message('converting'))
       end
     end

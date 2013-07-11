@@ -24,9 +24,8 @@ module PopCap
     end
 
     def output
-      executed = commander.new(*command).execute
-      raise(FFmpegError, error_message('reading')) unless executed.success?
-      executed.stdout
+      raise(FFmpegError, error_message('reading')) unless execute.success?
+      execute.stdout
     end
 
     def encode(string)

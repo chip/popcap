@@ -33,6 +33,12 @@ module PopCap
       "Error #{message} #{filepath}."
     end
 
+    # Public: execute a command
+    #
+    def execute
+      @executed ||= commander.new(*command).execute
+    end
+
     private
     def check_for_ffmpeg_install
       begin
