@@ -11,7 +11,7 @@ module PopCap
     #
     def write
       unless execute.success?
-        FileUtils.rm_f(tmppath)
+        cleanup_failed_write
         raise(FFmpegError, error_message('writing'))
       end
       FileUtils.move(tmppath, filepath)
@@ -25,7 +25,7 @@ module PopCap
 
     private
     def tmppath
-      '/tmp/' + File.basename(filepath)
+      @tmp ||= '/tmp/' + File.basename(filepath)
     end
 
     def command
@@ -40,6 +40,10 @@ module PopCap
 
     def clean_tags
       @cleaned ||= options.reject { |key,_| key == :commander }
+    end
+
+    def cleanup_failed_write
+      FileUtils.rm_f(tmppath)
     end
   end
 end
