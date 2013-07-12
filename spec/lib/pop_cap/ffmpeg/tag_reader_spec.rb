@@ -15,10 +15,6 @@ module PopCap
       instance.stub_chain(:execute, :stdout) { instance }
     end
 
-    it 'test' do
-      puts JSON.parse(TagReader.read('spec/fixtures/sample.flac'))
-    end
-
     describe '.read' do
       before { shared_example }
 
