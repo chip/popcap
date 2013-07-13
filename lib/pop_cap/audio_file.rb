@@ -7,7 +7,10 @@ require 'pop_cap/tag_struct'
 require 'pop_cap/fileable'
 
 module PopCap
+  VALID_AUDIO_FORMATS = %q(.flac .m4a .mp3 .mp4 .ogg .wav .wma)
+
   FileNotFound = Class.new(StandardError)
+  InvalidAudioFormat = Class.new(StandardError)
   # Public: This is a class for managing audio files on the filesystem.
   # It is used to read & write metadata tags, convert between audio formats,
   # and manage a file on the filesystem using standard UNIX file commands.
@@ -30,6 +33,7 @@ module PopCap
     #
     def initialize(filepath)
       raise(FileNotFound, filepath) unless File.exists?(filepath)
+      raise(InvalidAudioFormat, filepath) unless valid_audio_format?(filepath)
       @filepath = File.realpath(filepath)
     end
 
@@ -170,6 +174,15 @@ module PopCap
       TagWriter.write(filepath, updates)
       self.reload!
       self.tags
+    end
+
+    private
+    def valid_audio_format?(filepath)
+      VALID_AUDIO_FORMATS.include?(file_format(filepath))
+    end
+
+    def file_format(filepath)
+      File.extname(filepath).downcase
     end
   end
 end

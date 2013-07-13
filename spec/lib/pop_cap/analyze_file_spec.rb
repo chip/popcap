@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pop_cap/ffmpeg/analyze_file'
+require 'pop_cap/analyze_file'
 require 'fileutils'
 
 module PopCap

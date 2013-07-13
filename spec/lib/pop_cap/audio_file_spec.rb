@@ -117,5 +117,18 @@ module PopCap
         expect(File.exists?('spec/fixtures/sample.mp3')).to be_true
       end
     end
+
+    context "errors" do
+      let(:bad_file_format) { "spec/fixtures/not_audio_file.jpg" }
+
+      before { FileUtils.touch bad_file_format }
+      after { FileUtils.rm_f bad_file_format }
+
+      it "raises an error if invalid audio format" do
+        expect do
+          AudioFile.new(bad_file_format)
+        end.to raise_error
+      end
+    end
   end
 end
