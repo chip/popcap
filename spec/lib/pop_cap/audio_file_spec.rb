@@ -4,6 +4,7 @@ require 'pop_cap/audio_file'
 
 module PopCap
   describe AudioFile do
+
     let(:audio_file) { AudioFile.new(filepath) }
     let(:filepath) { File.realpath(PopCapSpecHelper::SAMPLE_FILE) }
     let(:included_modules) { AudioFile.included_modules }

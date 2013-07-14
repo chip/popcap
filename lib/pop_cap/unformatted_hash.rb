@@ -47,7 +47,7 @@ module PopCap
     end
 
     def tags_hash
-      parsed_json['tags']
+      parsed_json['tags'] || parsed_json
     end
 
     def parsed_json

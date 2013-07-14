@@ -29,6 +29,15 @@ module PopCap
         unformatted = UnformattedHash.new(json)
         expect(unformatted.hash).to eq({filesize: '10', artist: 'artist'})
       end
+
+      context "JSON does not contain 'tags' element" do
+        let(:json) { '{"format":{"size":"10"}}' }
+
+        it "returns a valid #unformatted hash" do
+          unformatted = UnformattedHash.new(json)
+          expect(unformatted.hash).to eq({filesize: '10'})
+        end
+      end
     end
 
     describe '.hash' do
